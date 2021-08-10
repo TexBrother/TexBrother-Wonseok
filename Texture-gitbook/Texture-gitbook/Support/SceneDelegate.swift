@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
 //        let vc = Component-in-VC()
 //        let vc = TestNodeController()
-        let vc = ListNodeController()
+//        let vc = ListNodeController()
+        let vc = ResultController()
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }

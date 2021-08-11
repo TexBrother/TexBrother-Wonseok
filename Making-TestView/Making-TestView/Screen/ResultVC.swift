@@ -26,13 +26,9 @@ final class ResultVC: ASDKViewController<ASDisplayNode> {
     
     // MARK: Layout
     private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
-        var containerInsets: UIEdgeInsets = self.node.safeAreaInsets
-        containerInsets.left += 15.0
-        containerInsets.right += 15.0
-        
         return ASInsetLayoutSpec(
-            insets: containerInsets,
-            child: self.contentLayoutSpec()
+            insets: self.node.safeAreaInsets,
+            child: contentLayoutSpec()
         )
     }
     

@@ -14,12 +14,11 @@ final class NaviNode: ASDisplayNode {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        node.backgroundColor = .red
         node.attributedText = NSAttributedString(
             string: "식물 결과",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.nblack,
                 .paragraphStyle: paragraphStyle
             ]
         )
@@ -28,8 +27,7 @@ final class NaviNode: ASDisplayNode {
     
     lazy var backBtn: ASButtonNode = {
         let node = ASButtonNode()
-        node.backgroundColor = .orange
-        node.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        node.setImage(UIImage(named: "icnBack"), for: .normal)
         return node
     }()
     
@@ -39,13 +37,13 @@ final class NaviNode: ASDisplayNode {
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
         // addTarget은 init()에
+        self.style.height = ASDimension(unit: .points, value: 44.0)
         backBtn.addTarget(self, action: #selector(backAction), forControlEvents: .touchUpInside)
     }
     
     // MARK: Node Life Cycle
     override func layout() {
         super.layout()
-        self.backgroundColor = .blue
     }
     
     

@@ -9,7 +9,7 @@ import AsyncDisplayKit
 
 final class TagNode: ASDisplayNode {
     
-    private let flowerName: ASTextNode = {
+    lazy var flowerName: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -17,14 +17,14 @@ final class TagNode: ASDisplayNode {
             string: "꽃말",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.stukiColor,
                 .paragraphStyle: paragraphStyle
             ]
         )
         return node
     }()
     
-    private let flowerMean: ASTextNode = {
+    lazy var flowerMean: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -32,7 +32,7 @@ final class TagNode: ASDisplayNode {
             string: "사랑과 열정",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.stukiColor,
                 .paragraphStyle: paragraphStyle
             ]
         )
@@ -41,7 +41,7 @@ final class TagNode: ASDisplayNode {
     
     lazy var separatorNode: ASDisplayNode = {
         let node = ASDisplayNode()
-        node.backgroundColor = UIColor.black
+        node.backgroundColor = UIColor.stukiColor
         node.styled {
             $0.width = ASDimension(unit: .points, value: 1)
             $0.height = ASDimension(unit: .points, value: 10)
@@ -61,9 +61,8 @@ final class TagNode: ASDisplayNode {
     override func layout() {
         super.layout()
         self.borderWidth = 1.0
-        self.borderColor = UIColor.black.cgColor
+        self.borderColor = UIColor.stukiColor.cgColor
         self.cornerRadius = self.frame.height / 2
-        self.style.preferredSize = CGSize(width: 141, height: 27)
     }
     
     // MARK: Layout

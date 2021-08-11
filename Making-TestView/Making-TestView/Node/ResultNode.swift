@@ -10,7 +10,7 @@ import AsyncDisplayKit
 final class ResultNode: ASDisplayNode {
     
     // MARK: UI
-    private let titleNode: ASTextNode = {
+    lazy var titleNode: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -18,58 +18,56 @@ final class ResultNode: ASDisplayNode {
             string: "당신의 밤을 지켜주는",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 28, weight: .light),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.nblack,
                 .paragraphStyle: paragraphStyle
             ]
         )
         return node
     }()
     
-    private let subTitleNode: ASTextNode = {
+    lazy var subTitleNode: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         node.attributedText = NSAttributedString(
-            string: "씩씩한 텍스형",
+            string: "씩씩한 단모환",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 28, weight: .bold),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.nblack,
                 .paragraphStyle: paragraphStyle
             ]
         )
         return node
     }()
     
-    private let plantImageNode: ASImageNode = {
+    lazy var plantImageNode: ASImageNode = {
         let node = ASImageNode()
         node.image = UIImage(named: "imgFinalSun")
-        node.borderWidth = 1.0
-        node.borderColor = UIColor.gray.cgColor
         node.cornerRadius = 15.0
         node.contentMode = .scaleAspectFit
         return node
     }()
     
-    private let descriptionNode: ASTextNode = {
+    lazy var descriptionNode: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         node.maximumNumberOfLines = 0
         node.attributedText = NSAttributedString(
-            string: "세 달에 한 번 수염을 빗질해줘야해요\n자주 보지 못해도 루틴을 꼭 지켜주세요!",
+            string: "세 달에 한 번 물을 주는 것을 추천해요\n자주 보지 못해도 분명 당신의 연락을 기다릴거에요!",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 14, weight: .regular),
-                .foregroundColor: UIColor.black,
+                .foregroundColor: UIColor.nblack,
                 .paragraphStyle: paragraphStyle,
             ]
         )
         return node
     }()
     
-    private let startBtnNode: ASButtonNode = {
+    lazy var startBtnNode: ASButtonNode = {
         let node = ASButtonNode()
-        node.backgroundColor = .gray
-        node.setTitle("시작하기", with: UIFont.systemFont(ofSize: 16, weight: .medium), with: .black, for: .normal)
+        node.backgroundColor = .stukiColor
+        node.setTitle("시작하기", with: UIFont.systemFont(ofSize: 16, weight: .medium), with: .white, for: .normal)
         node.style.height = ASDimension(unit: .points, value: 48)
         node.cornerRadius = 24
         return node
@@ -91,28 +89,46 @@ final class ResultNode: ASDisplayNode {
     
     
     // MARK: Layout
-    override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
+    override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {        
         return ASInsetLayoutSpec(
-            insets: UIEdgeInsets(top: 49, left: 0, bottom: 33, right: 0),
-            child: contentLayoutSpec()
+            insets: UIEdgeInsets(top: 49, left: 15, bottom: 33, right: 15),
+            child: finalContentLayoutSpec()
         )
     }
     
-    
-    
-    private func contentLayoutSpec() -> ASLayoutSpec {
+    private func finalContentLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec(
+            direction: .vertical,
+            spacing: 38.0,
+            justifyContent: .center,
+            alignItems: .notSet,
+            children: [
+                withoutBtnContentLayoutSpec(),
+                startBtnNode.styled {
+                    $0.flexGrow = 1
+                    $0.alignSelf = .stretch
+                }
+            ]
+        )
+    }
+    
+    private func withoutBtnContentLayoutSpec() -> ASLayoutSpec {
+        let withoutContent = ASStackLayoutSpec (
             direction: .vertical,
             spacing: 20.0,
             justifyContent: .center,
-            alignItems: .stretch,
+            alignItems: .center,
             children: [
                 resultTitleLayoutSpec(),
                 imageLayoutSpec(),
                 TagNode(),
                 descriptionNode,
-                startBtnNode
             ]
+        )
+        
+        return ASInsetLayoutSpec(
+            insets: UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 30),
+            child: withoutContent
         )
     }
     

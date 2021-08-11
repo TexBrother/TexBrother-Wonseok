@@ -91,8 +91,8 @@ final class ResultNode: ASDisplayNode {
     // MARK: Layout
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec(
-            insets: UIEdgeInsets(top: 49, left: 16, bottom: 33, right: 16),
-            child: self.contentLayoutSpec()
+            insets: UIEdgeInsets(top: 49, left: 0, bottom: 33, right: 0),
+            child: contentLayoutSpec()
         )
     }
     

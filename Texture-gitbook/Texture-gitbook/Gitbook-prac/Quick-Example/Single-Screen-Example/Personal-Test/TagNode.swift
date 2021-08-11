@@ -63,6 +63,7 @@ final class TagNode: ASDisplayNode {
         self.borderWidth = 1.0
         self.borderColor = UIColor.black.cgColor
         self.cornerRadius = self.frame.height / 2
+        self.style.preferredSize = CGSize(width: 141, height: 27)
     }
     
     // MARK: Layout

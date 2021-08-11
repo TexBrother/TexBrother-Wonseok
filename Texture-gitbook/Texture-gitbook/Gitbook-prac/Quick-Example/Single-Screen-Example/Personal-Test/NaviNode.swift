@@ -14,7 +14,7 @@ final class NaviNode: ASDisplayNode {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        node.backgroundColor = .red
+        //        node.backgroundColor = .red
         node.attributedText = NSAttributedString(
             string: "식물 결과",
             attributes: [
@@ -28,7 +28,7 @@ final class NaviNode: ASDisplayNode {
     
     private let backBtn: ASButtonNode = {
         let node = ASButtonNode()
-        node.backgroundColor = .orange
+        //        node.backgroundColor = .orange
         node.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
         node.addTarget(self, action: #selector(backAction), forControlEvents: .touchUpInside)
         return node
@@ -41,11 +41,10 @@ final class NaviNode: ASDisplayNode {
         self.automaticallyRelayoutOnSafeAreaChanges = true
     }
     
-    
     // MARK: Node Life Cycle
     override func layout() {
         super.layout()
-        self.backgroundColor = .blue
+        //        self.backgroundColor = .blue
     }
     
     

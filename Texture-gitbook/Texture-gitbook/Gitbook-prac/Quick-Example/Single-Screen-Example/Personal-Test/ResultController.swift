@@ -7,15 +7,41 @@
 
 import AsyncDisplayKit
 
-final class ResultController: ASDKViewController<NaviNode> {
+final class ResultController: ASDKViewController<ASDisplayNode> {
     // MARK: Initializing
     
     override init() {
-      super.init(node: NaviNode())
-      self.node.backgroundColor = .white
+        super.init(node: ASDisplayNode())
+        self.node.backgroundColor = .white
+        self.node.automaticallyManagesSubnodes = true
+        self.node.automaticallyRelayoutOnSafeAreaChanges = true
+        self.node.layoutSpecBlock = { [weak self] (node, constraintedSize) -> ASLayoutSpec in
+            return self?.layoutSpecThatFits(constraintedSize) ?? ASLayoutSpec()
+        }
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
-      fatalError("init(coder:) has not been implemented")
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Layout
+    private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
+        return ASInsetLayoutSpec(
+            insets: self.node.safeAreaInsets,
+            child: self.contentLayoutSpec()
+        )
+    }
+    
+    private func contentLayoutSpec() -> ASLayoutSpec {
+        return ASStackLayoutSpec(
+            direction: .vertical,
+            spacing: 10,
+            justifyContent: .start,
+            alignItems: .start,
+            children: [
+                NaviNode(),
+                ResultNode()
+            ]
+        )
     }
 }

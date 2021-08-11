@@ -1,13 +1,13 @@
 //
-//  ResultController.swift
-//  Texture-gitbook
+//  ResultVC.swift
+//  Making-TestView
 //
-//  Created by Wonseok Lee on 2021/08/09.
+//  Created by Wonseok Lee on 2021/08/12.
 //
 
 import AsyncDisplayKit
 
-final class ResultController: ASDKViewController<ASDisplayNode> {
+final class ResultVC: ASDKViewController<ASDisplayNode> {
     // MARK: Initializing
     
     override init() {
@@ -49,3 +49,4 @@ final class ResultController: ASDKViewController<ASDisplayNode> {
         )
     }
 }
+

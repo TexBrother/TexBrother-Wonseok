@@ -1,8 +1,8 @@
 //
 //  NaviNode.swift
-//  Texture-gitbook
+//  Making-TestView
 //
-//  Created by Wonseok Lee on 2021/08/10.
+//  Created by Wonseok Lee on 2021/08/12.
 //
 
 import AsyncDisplayKit
@@ -10,11 +10,11 @@ import AsyncDisplayKit
 final class NaviNode: ASDisplayNode {
     
     // MARK: UI
-    private let titleNode: ASTextNode = {
+    lazy var titleNode: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
-        //        node.backgroundColor = .red
+        node.backgroundColor = .red
         node.attributedText = NSAttributedString(
             string: "식물 결과",
             attributes: [
@@ -26,11 +26,10 @@ final class NaviNode: ASDisplayNode {
         return node
     }()
     
-    private let backBtn: ASButtonNode = {
+    lazy var backBtn: ASButtonNode = {
         let node = ASButtonNode()
-        //        node.backgroundColor = .orange
+        node.backgroundColor = .orange
         node.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
-        node.addTarget(self, action: #selector(backAction), forControlEvents: .touchUpInside)
         return node
     }()
     
@@ -39,12 +38,14 @@ final class NaviNode: ASDisplayNode {
         super.init()
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
+        // addTarget은 init()에
+        backBtn.addTarget(self, action: #selector(backAction), forControlEvents: .touchUpInside)
     }
     
     // MARK: Node Life Cycle
     override func layout() {
         super.layout()
-        //        self.backgroundColor = .blue
+        self.backgroundColor = .blue
     }
     
     
@@ -68,13 +69,10 @@ final class NaviNode: ASDisplayNode {
             children: [backBtnLayout, titleLayout]
         )
     }
-}
-
-extension NaviNode {
     
     // MARK: Action
-    @objc
-    func backAction() {
+    @objc func backAction() {
         print("뒤로가기")
     }
 }
+

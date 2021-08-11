@@ -1,8 +1,8 @@
 //
 //  ResultNode.swift
-//  Texture-gitbook
+//  Making-TestView
 //
-//  Created by Wonseok Lee on 2021/08/09.
+//  Created by Wonseok Lee on 2021/08/12.
 //
 
 import AsyncDisplayKit
@@ -42,7 +42,7 @@ final class ResultNode: ASDisplayNode {
     
     private let plantImageNode: ASImageNode = {
         let node = ASImageNode()
-        node.image = UIImage(named: "texBrother")
+        node.image = UIImage(named: "imgFinalSun")
         node.borderWidth = 1.0
         node.borderColor = UIColor.gray.cgColor
         node.cornerRadius = 15.0
@@ -70,6 +70,8 @@ final class ResultNode: ASDisplayNode {
         let node = ASButtonNode()
         node.backgroundColor = .gray
         node.setTitle("시작하기", with: UIFont.systemFont(ofSize: 16, weight: .medium), with: .black, for: .normal)
+        node.style.height = ASDimension(unit: .points, value: 48)
+        node.cornerRadius = 24
         return node
     }()
     
@@ -103,21 +105,18 @@ final class ResultNode: ASDisplayNode {
             direction: .vertical,
             spacing: 20.0,
             justifyContent: .center,
-            alignItems: .center,
+            alignItems: .stretch,
             children: [
-                titleLayoutSpec(),
+                resultTitleLayoutSpec(),
                 imageLayoutSpec(),
                 TagNode(),
                 descriptionNode,
-                self.startBtnNode.styled {
-                    $0.width = ASDimension(unit: .points, value: super.frame.width)
-                    $0.height = ASDimension(unit: .points, value: 48)
-                }
+                startBtnNode
             ]
         )
     }
     
-    private func titleLayoutSpec() -> ASLayoutSpec {
+    private func resultTitleLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .vertical,
             spacing: 5.0,
@@ -136,4 +135,5 @@ final class ResultNode: ASDisplayNode {
         }
     }
 }
+
 

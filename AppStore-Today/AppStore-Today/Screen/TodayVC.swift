@@ -37,6 +37,7 @@ final class TodayVC: ASDKViewController<ASDisplayNode> {
         )
     }
     
+    // 메인 뷰에 배너 결합
     private func contentLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .vertical,
@@ -50,6 +51,7 @@ final class TodayVC: ASDKViewController<ASDisplayNode> {
         )
     }
     
+    // 헤더 뷰 결합 - 왼쪽에는 날짜 부분 오른쪽에는 프로필 사진 부분
     private func headerLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .horizontal,

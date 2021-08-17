@@ -76,12 +76,14 @@ final class BannerNode: ASImageNode {
     }
     
     // MARK: Layout
+    // 배너 이미지 1:1 비율
     func contentLayoutSpec() -> ASLayoutSpec {
         let absoluteLayoutSpec = ASAbsoluteLayoutSpec (sizing: .default, children: [self.titleLayoutSpec(), self.descriptionLayoutSpec()])
         
         return ASRatioLayoutSpec (ratio: 1.0, child: absoluteLayoutSpec)
     }
     
+    // 배너 좌측 상단 부 위치 잡기
     func titleLayoutSpec() -> ASLayoutSpec {
         let insets = UIEdgeInsets(top: 16.0, left: 20.0, bottom: 0.0, right: 0.0)
         let titleInsetLayout = ASInsetLayoutSpec(insets: insets, child: titleStackLayoutSpec())
@@ -94,6 +96,7 @@ final class BannerNode: ASImageNode {
         )
     }
     
+    // 배너 좌측 상단 부 스택으로 묶기
     func titleStackLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .vertical,
@@ -107,6 +110,7 @@ final class BannerNode: ASImageNode {
         )
     }
     
+    // 배너 좌측 하단 부 위치 잡기
     func descriptionLayoutSpec() -> ASLayoutSpec {
         let insets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 15.0, right: 0.0)
         let descriptionInsetLayout = ASInsetLayoutSpec(insets: insets, child: descriptionNode)

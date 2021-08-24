@@ -52,7 +52,6 @@ final class DateNode: ASDisplayNode {
         super.layout()
     }
     
-    
     // MARK: Layout
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
         

@@ -94,8 +94,7 @@ extension MainVC: ASTableDataSource {
             guard let section = Section.init(rawValue: indexPath.section) else { return ASCellNode() }
             
             switch section {
-            case .myProfile:
-                guard FreindsListData.count > indexPath.row else { return ASCellNode() }
+            case .myProfile: 
                 let myInfo = FreindsList(imageName: "friendtabProfileImg", userName: "텍스형", statusMessage: "내가 텍스형이다!")
                 return ProfileCellNode(model: myInfo, category: section)
             case .freinds:
@@ -105,7 +104,7 @@ extension MainVC: ASTableDataSource {
             }
         }
     }
-    
+
     // cell 사이즈 리미트 제한
     func tableNode(_ tableNode: ASTableNode, constrainedSizeForRowAt indexPath: IndexPath) -> ASSizeRange {
         guard let section = Section.init(rawValue: indexPath.section) else { return ASSizeRange() }

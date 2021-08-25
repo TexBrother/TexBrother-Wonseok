@@ -7,13 +7,13 @@
 
 import AsyncDisplayKit
 
-class TabBarVC: ASTabBarController {
+final class TabBarVC: ASTabBarController {
     // MARK: UI
     let MainViewController = MainVC()
     let ChatViewController = ChatVC()
-    let SearchViewController = MainVC()
-    let ShopViewController = MainVC()
-    let DetailViewController = MainVC()
+    let SearchViewController = ChatVC()
+    let ShopViewController = ChatVC()
+    let DetailViewController = ChatVC()
     
     // MARK: Initializer
     override func viewDidLoad() {

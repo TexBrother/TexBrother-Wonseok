@@ -15,7 +15,7 @@ final class MainVC: ASDKViewController<ASDisplayNode> {
     }
     
     // MARK: UI
-    lazy var tableNode: ASTableNode = {
+    private lazy var tableNode: ASTableNode = {
         let node = ASTableNode(style: .plain)
         node.delegate = self
         node.dataSource = self
@@ -23,7 +23,7 @@ final class MainVC: ASDKViewController<ASDisplayNode> {
         return node
     }()
     
-    lazy var headerNode = HeaderNode()
+    private lazy var headerNode = HeaderNode()
     
     // MARK: Initializing
     override init() {
@@ -94,7 +94,7 @@ extension MainVC: ASTableDataSource {
             guard let section = Section.init(rawValue: indexPath.section) else { return ASCellNode() }
             
             switch section {
-            case .myProfile: 
+            case .myProfile:
                 let myInfo = FreindsList(imageName: "friendtabProfileImg", userName: "텍스형", statusMessage: "내가 텍스형이다!")
                 return ProfileCellNode(model: myInfo, category: section)
             case .freinds:

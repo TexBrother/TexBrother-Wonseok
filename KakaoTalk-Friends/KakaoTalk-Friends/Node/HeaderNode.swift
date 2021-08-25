@@ -10,7 +10,7 @@ import AsyncDisplayKit
 final class HeaderNode: ASDisplayNode {
     
     // MARK: UI
-    lazy var titleNode: ASTextNode = {
+    private lazy var titleNode: ASTextNode = {
         let node = ASTextNode()
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left

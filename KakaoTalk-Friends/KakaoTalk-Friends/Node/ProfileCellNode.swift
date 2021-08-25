@@ -8,7 +8,7 @@
 import AsyncDisplayKit
 
 final class ProfileCellNode: ASCellNode {
-    struct Const {
+    private struct Const {
         static var userAttribute: [NSAttributedString.Key: Any] {
             return [.font: UIFont.systemFont(ofSize: 16.0, weight: .semibold),
                     .foregroundColor: UIColor.black]
@@ -26,7 +26,7 @@ final class ProfileCellNode: ASCellNode {
     }
     
     // MARK: UI
-    lazy var profileImageNode: ASImageNode = {
+    private lazy var profileImageNode: ASImageNode = {
         let node = ASImageNode()
         node.clipsToBounds = true
         node.contentMode = .scaleAspectFit
@@ -34,13 +34,13 @@ final class ProfileCellNode: ASCellNode {
     }()
     
     
-    lazy var nameNode: ASTextNode = {
+    private lazy var nameNode: ASTextNode = {
         let node = ASTextNode()
         node.maximumNumberOfLines = 1
         return node
     }()
     
-    lazy var statusMessageNode: ASTextNode = {
+    private lazy var statusMessageNode: ASTextNode = {
         let node = ASTextNode()
         node.maximumNumberOfLines = 1
         return node

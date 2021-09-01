@@ -21,12 +21,17 @@
 
 * `ASButtonNode에 addTarget하기`
 
-  * addTarget메서드는 init() 내부에 작성해주어야 한다.
+  * addTarget메서드는 didLoad() 내부에 작성해주어야 한다.
 
     ```swift
-    override init() {
-    		// ...
-        backBtn.addTarget(self, action: #selector(backAction), forControlEvents: .touchUpInside)
+    // MARK: Initializing
+    init(_ profileImgName: String, _ userName: String) {
+      //...
+      self.node.onDidLoad({ [weak self] _ in
+                           self?.dismissBtn.addTarget(self,
+                                                      action: #selector(self?.dismissAction),
+                                                      forControlEvents: .touchUpInside)
+                          })
     }
     ```
 

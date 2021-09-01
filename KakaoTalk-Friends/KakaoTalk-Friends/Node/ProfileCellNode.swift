@@ -36,12 +36,14 @@ final class ProfileCellNode: ASCellNode {
     
     private lazy var nameNode: ASTextNode = {
         let node = ASTextNode()
+        node.style.flexShrink = 1.0
         node.maximumNumberOfLines = 1
         return node
     }()
     
     private lazy var statusMessageNode: ASTextNode = {
         let node = ASTextNode()
+        node.style.flexShrink = 1.0
         node.maximumNumberOfLines = 1
         return node
     }()

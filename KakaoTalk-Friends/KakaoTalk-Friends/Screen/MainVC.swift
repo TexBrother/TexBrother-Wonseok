@@ -69,7 +69,19 @@ final class MainVC: ASDKViewController<ASDisplayNode> {
 // MARK: Protocols
 extension MainVC: ASTableDelegate {
     func tableNode(_ tableNode: ASTableNode, didSelectRowAt indexPath: IndexPath) {
-        print("클릭 \(indexPath.row)")
+        guard let section = Section.init(rawValue: indexPath.section) else { return }
+        let dvc: UIViewController
+        
+        switch section {
+        case .myProfile:
+            dvc = ProfileDetailVC("friendtabProfileImg", "텍스형")
+        case .freinds:
+            let freindModel = FreindsListData[indexPath.row]
+            dvc = ProfileDetailVC(freindModel.imageName ?? "friendtabProfileImg", freindModel.userName)
+        }
+        
+        dvc.modalPresentationStyle = .fullScreen
+        self.present(dvc, animated: true, completion: nil)
     }
 }
 extension MainVC: ASTableDataSource {

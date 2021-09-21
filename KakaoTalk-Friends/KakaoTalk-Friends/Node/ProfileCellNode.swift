@@ -33,7 +33,6 @@ final class ProfileCellNode: ASCellNode {
         return node
     }()
     
-    
     private lazy var nameNode: ASTextNode = {
         let node = ASTextNode()
         node.style.flexShrink = 1.0
@@ -64,6 +63,7 @@ final class ProfileCellNode: ASCellNode {
         switch category {
         case .myProfile:
             profileImageNode.style.preferredSize = CGSize(width: 59.0, height: 59.0)
+            nameNode.style.spacingAfter = 5
             nameAttrs = Const.userAttribute
             
         case .freinds:

@@ -9,11 +9,11 @@ import AsyncDisplayKit
 
 final class TabBarVC: ASTabBarController {
     // MARK: UI
-    let HomeViewController = PayTab()
-    let PayViewController = PayTab()
-    let OrderViewController = PayTab()
-    let GiftViewController = PayTab()
-    let OtherViewController = PayTab()
+    let HomeViewController = PayTabController()
+    let PayViewController = PayTabController()
+    let OrderViewController = PayTabController()
+    let GiftViewController = PayTabController()
+    let OtherViewController = PayTabController()
     
     // MARK: Initializer
     override func viewDidLoad() {
@@ -28,8 +28,11 @@ extension TabBarVC: UITabBarControllerDelegate {
     
     private func setupTabBar(){
         delegate = self
-        tabBar.isTranslucent = false
-        tabBar.tintColor = .label
+//        tabBar.isTranslucent = false
+        tabBar.shadowImage = UIImage()
+        tabBar.backgroundImage = UIImage()
+        tabBar.backgroundColor = UIColor.secondarySystemBackground
+        tabBar.tintColor = .systemGreen
         selectedIndex = 0
         configureVCs()
     }
@@ -39,7 +42,7 @@ extension TabBarVC: UITabBarControllerDelegate {
         homeNC.navigationBar.isHidden = true
         
         let payNC = ASNavigationController(rootViewController: PayViewController)
-        payNC.navigationController?.navigationBar.prefersLargeTitles = true
+        payNC.navigationBar.isHidden = true
         
         let orderNC = ASNavigationController(rootViewController: OrderViewController)
         orderNC.navigationBar.isHidden = true
@@ -55,20 +58,20 @@ extension TabBarVC: UITabBarControllerDelegate {
     }
     
     private func setTabBarIcons(){
-        let mainIcon = UITabBarItem(title: nil, image: UIImage(named: "messageTabIcon"), selectedImage: UIImage(named: "messageTabIconSelected") )
-        HomeViewController.tabBarItem = mainIcon
+        let homeIcon = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
+        HomeViewController.tabBarItem = homeIcon
         
-        let chatIcon = UITabBarItem(title: nil, image: UIImage(named: "messageTabIcon"), selectedImage: UIImage(named: "messageTabIconSelected") )
-        PayViewController.tabBarItem = chatIcon
+        let payIcon = UITabBarItem(title: "Pay", image: UIImage(systemName: "creditcard.fill"), tag: 1)
+        PayViewController.tabBarItem = payIcon
         
-        let searchIcon = UITabBarItem(title: nil, image: UIImage(named: "messageTabIcon"), selectedImage: UIImage(named: "messageTabIconSelected") )
-        OrderViewController.tabBarItem = searchIcon
+        let orderIcon = UITabBarItem(title: "Other", image: UIImage(systemName: "arrow.up.bin.fill"), tag: 2)
+        OrderViewController.tabBarItem = orderIcon
         
-        let shopNC = UITabBarItem(title: nil, image: UIImage(named: "messageTabIcon"), selectedImage: UIImage(named: "messageTabIconSelected") )
-        GiftViewController.tabBarItem = shopNC
+        let giftIcon = UITabBarItem(title: "Gift", image: UIImage(systemName: "gift.fill"), tag: 3)
+        GiftViewController.tabBarItem = giftIcon
         
-        let detailIcon = UITabBarItem(title: nil, image: UIImage(named: "messageTabIcon"), selectedImage: UIImage(named: "messageTabIconSelected") )
-        OtherViewController.tabBarItem = detailIcon
+        let otherIcon = UITabBarItem(title: "Other", image: UIImage(named: "messageTabIcon.fill"), tag: 4)
+        OtherViewController.tabBarItem = otherIcon
     }
 }
 

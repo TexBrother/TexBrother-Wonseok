@@ -33,7 +33,6 @@ extension TabBarVC: UITabBarControllerDelegate {
         tabBar.backgroundImage = UIImage()
         tabBar.backgroundColor = UIColor.secondarySystemBackground
         tabBar.tintColor = .systemGreen
-        selectedIndex = 0
         configureVCs()
     }
     
@@ -55,6 +54,7 @@ extension TabBarVC: UITabBarControllerDelegate {
         
         let tabs = [homeNC, payNC, orderNC, giftNC, otherNC]
         self.setViewControllers(tabs, animated: true)
+        self.selectedIndex = 1
     }
     
     private func setTabBarIcons(){

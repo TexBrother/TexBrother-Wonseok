@@ -1,5 +1,5 @@
 //
-//  TabBarVC.swift
+//  TabBarController.swift
 //  StarBucks_Clone
 //
 //  Created by Wonseok Lee on 2021/09/21.
@@ -7,7 +7,7 @@
 
 import AsyncDisplayKit
 
-final class TabBarVC: ASTabBarController {
+final class TabBarController: ASTabBarController {
     // MARK: UI
     let HomeViewController = PayTabController()
     let PayViewController = PayTabController()
@@ -24,7 +24,7 @@ final class TabBarVC: ASTabBarController {
 }
 
 // MARK: Setup Functions
-extension TabBarVC: UITabBarControllerDelegate {
+extension TabBarController: UITabBarControllerDelegate {
     
     private func setupTabBar(){
         delegate = self

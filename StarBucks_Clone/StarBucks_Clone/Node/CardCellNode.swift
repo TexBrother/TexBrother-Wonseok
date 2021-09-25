@@ -10,7 +10,10 @@ import Then
 
 final class CardCellNode: ASCellNode {
     // MARK: UI
-    private lazy var cardImage = CardImageNode()
+    private lazy var cardImage = CardImageNode().then {
+        $0.clipsToBounds = true
+        $0.contentMode = .scaleAspectFit
+    }
     private lazy var cardName = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
@@ -40,6 +43,7 @@ final class CardCellNode: ASCellNode {
     init(model: CardInfo?) {
         super.init()
         print("LOG >>>>> init")
+        self.backgroundColor = .systemBackground
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
         
@@ -89,16 +93,18 @@ final class CardCellNode: ASCellNode {
         }
     }
     
-    // MARK: Node Life Cycle
+    // MARK: Node Life Cycle, Main Thread
     override func layout() {
         super.layout()
+        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 5), opacity: 0.2, blur: 3)
+//        self.makeRounded(cornerRadius: <#T##CGFloat?#>)
     }
     
     
     // MARK: Layout
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec (
-            insets: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10),
+            insets: UIEdgeInsets(top: 19, left: 20, bottom: 0, right: 20),
             child: contentLayoutSpec()
         )
     }
@@ -119,8 +125,8 @@ extension CardCellNode {
         return ASStackLayoutSpec (
             direction: .horizontal,
             spacing: 0,
-            justifyContent: .start,
-            alignItems: .center,
+            justifyContent: .center,
+            alignItems: .start,
             children: [
                 autoChargeBtn,
                 normalChargeBtn

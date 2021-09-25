@@ -13,7 +13,6 @@ final class CardImageNode: ASImageNode {
         super.init()
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
-        self.style.preferredSize = CGSize(width: UIScreen.main.bounds.width-60, height: 250)
     }
     
     // MARK: Node Life Cycle
@@ -22,7 +21,7 @@ final class CardImageNode: ASImageNode {
         self.clipsToBounds = true
         self.backgroundColor = .clear
         self.image = UIImage(named: "cardSample")
-        self.contentMode = .scaleAspectFit
+        self.contentMode = .scaleAspectFill
     }
     
     // MARK: Layout

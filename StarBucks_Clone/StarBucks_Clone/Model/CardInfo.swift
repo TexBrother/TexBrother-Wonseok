@@ -15,7 +15,8 @@ struct CardInfo {
     let barcodeNum: String
 }
 
-//var CardListData: [CardInfo] = [
-//    CardInfo(cardImgName: "cardSample", name: "카드", balance: "4,000원", barcodeImgName: "bannerSample", barcodeNum: "123132")
-//]
-var CardListData = [CardInfo]()
+var CardListData: [CardInfo] = [
+    CardInfo(cardImgName: "cardSample", name: "카드", balance: "4,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582"),
+    CardInfo(cardImgName: "cardSample", name: "카드", balance: "4,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582")
+]
+//var CardListData = [CardInfo]()

@@ -8,26 +8,28 @@
 import UIKit
 
 public struct Attr {
-    static var nameAttribute: [NSAttributedString.Key: Any] {
-        return [.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold),
+    static var twelveSM: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 12.0, weight: .semibold),
                 .foregroundColor: UIColor.black]
     }
     
-    static var balanceAttribute: [NSAttributedString.Key: Any] {
-        return [.font: UIFont.systemFont(ofSize: 16.0, weight: .semibold),
+    static var fifteenReg: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 15.0, weight: .regular),
                 .foregroundColor: UIColor.black]
     }
     
-    static var etcAttribute: [NSAttributedString.Key: Any] {
+    static var twentyThreeBold: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 23.0, weight: .bold),
+                .foregroundColor: UIColor.black]
+    }
+    
+    static var thirteenSM: [NSAttributedString.Key: Any] {
         return [.font: UIFont.systemFont(ofSize: 11.0, weight: .bold),
                 .foregroundColor: UIColor.gray]
     }
     
-    static var naviAttribute: [NSAttributedString.Key: Any] {
-        let shadow = NSShadow()
-        shadow.shadowColor = .none
-        shadow.shadowBlurRadius = 0
+    static var twentyEightBold: [NSAttributedString.Key: Any] {
         return [.font: UIFont.systemFont(ofSize: 28.0, weight: .bold),
-                .foregroundColor: UIColor.black, .shadow: shadow]
+                .foregroundColor: UIColor.black]
     }
 }

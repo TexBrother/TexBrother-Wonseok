@@ -13,9 +13,24 @@ public struct Attr {
                 .foregroundColor: UIColor.black]
     }
     
+    static var twelveBoldGr: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 12.0, weight: .bold),
+                .foregroundColor: UIColor(red: 1/255, green: 176/255, blue: 122/255, alpha: 1.0)]
+    }
+    
     static var fifteenReg: [NSAttributedString.Key: Any] {
         return [.font: UIFont.systemFont(ofSize: 15.0, weight: .regular),
                 .foregroundColor: UIColor.black]
+    }
+    
+    static var seventeenSM: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 17.0, weight: .semibold),
+                .foregroundColor: UIColor.black]
+    }
+    
+    static var fourteenMedGr: [NSAttributedString.Key: Any] {
+        return [.font: UIFont.systemFont(ofSize: 14.0, weight: .medium),
+                .foregroundColor: UIColor.gray]
     }
     
     static var twentyThreeBold: [NSAttributedString.Key: Any] {
@@ -24,7 +39,7 @@ public struct Attr {
     }
     
     static var thirteenSM: [NSAttributedString.Key: Any] {
-        return [.font: UIFont.systemFont(ofSize: 11.0, weight: .bold),
+        return [.font: UIFont.systemFont(ofSize: 13.0, weight: .semibold),
                 .foregroundColor: UIColor.gray]
     }
     

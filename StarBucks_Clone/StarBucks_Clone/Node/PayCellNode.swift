@@ -36,9 +36,12 @@ final class PayCellNode: ASCellNode {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
     }
-//    private lazy var validTimeNode = ASTextNode().then {
-//        $0.attributedText = NSAttributedString(string: "10:00", attributes: Attr.twelveSM)
-//    }
+    private lazy var validTimeTextNode = ASTextNode().then {
+        $0.attributedText = NSAttributedString(string: "바코드 유효시간", attributes: Attr.twelveSM)
+    }
+    private lazy var validTimerNode = ASTextNode().then {
+        $0.attributedText = NSAttributedString(string: "10:00", attributes: Attr.twelveBoldGr)
+    }
     private lazy var autoChargeBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "autoCharge"), for: .normal)
     }
@@ -54,7 +57,9 @@ final class PayCellNode: ASCellNode {
         $0.attributedText = NSAttributedString(string: "일반충전", attributes: Attr.twelveSM)
     }
     private var visibleContentArray = [ASLayoutElement]()
-    // var timeLeft = 600
+    var timeLeft = 600
+    var timer: Timer?
+    
     
     // MARK: Initializing
     
@@ -64,8 +69,10 @@ final class PayCellNode: ASCellNode {
         self.backgroundColor = .systemBackground
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
+        self.style.minHeight = ASDimension(unit: .points, value: 445)
         // 등록된 카드가 있을 때
         if let data = model {
+            timeLeft = 600
             setData(
                 exist: true,
                 cardImg: data.cardImgName,
@@ -76,22 +83,25 @@ final class PayCellNode: ASCellNode {
             )
             // 등록된 카드가 하나도 없을 때
         } else {
+            timeLeft = 0
             setData(
                 exist: false,
                 cardImg: "cardSample",
                 card_Name: "스타벅스 카드를 등록해보세요.",
-                card_Balance: "매장과 사이렌오더에서 쉽고 편리하게 \n 사용할 수 있고, 별도 적립할 수 있습니다.",
+                card_Balance: "매장과 사이렌오더에서 쉽고 편리하게\n사용할 수 있고, 별도 적립할 수 있습니다.",
                 barcodeImg: nil, barcode_Num: nil
             )
         }
     }
     
-    // MARK: Node Life Cycle, Main Thread
+    override func didLoad() {
+        self.setRepeatTimer(1.0, true)
+    }
     
+    // MARK: Node Life Cycle, Main Thread
     override func layout() {
         super.layout()
-        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 5), opacity: 0.2, blur: 3)
-        //        self.makeRounded(cornerRadius: <#T##CGFloat?#>)
+        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 3), opacity: 0.2, blur: 5)
     }
 }
 
@@ -110,15 +120,24 @@ extension PayCellNode {
     private func contentLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .vertical,
-            spacing: 10,
-            justifyContent: .center,
+            spacing: 0,
+            justifyContent: .start,
             alignItems: .center,
             children: visibleContentArray
         )
     }
     
-    private func cardNameLayoutSpec() -> ASLayoutSpec {
-        return ASStackLayoutSpec(direction: .horizontal, spacing: 7, justifyContent: .center, alignItems: .center, children: [cardNameNode, cardStarNode])
+    private func cardInfoLayoutSpec() -> ASLayoutSpec {
+        let cardNameStack = ASStackLayoutSpec(direction: .horizontal, spacing: 7, justifyContent: .center, alignItems: .center, children: [cardNameNode, cardStarNode])
+        return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: .center, alignItems: .center, children: [cardNameStack, cardBalanceNode])
+    }
+    
+    private func barcodeLayoutSpec() -> ASLayoutSpec {
+        return ASStackLayoutSpec(direction: .vertical, spacing: 8, justifyContent: .center, alignItems: .center, children: [barcodeImgNode, barcodeNumNode])
+    }
+    
+    private func timerLayoutSpec() -> ASLayoutSpec {
+        return ASStackLayoutSpec(direction: .horizontal, spacing: 3, justifyContent: .center, alignItems: .center, children: [validTimeTextNode, validTimerNode])
     }
     
     private func chargeBtnLayoutSpec() -> ASLayoutSpec {
@@ -150,11 +169,11 @@ extension PayCellNode {
         cardImgNode.image = UIImage(named: cardImg)
         cardNameNode.attributedText = NSAttributedString (
             string: card_Name,
-            attributes: Attr.fifteenReg
+            attributes: exist ? Attr.thirteenSM : Attr.seventeenSM
         )
         cardBalanceNode.attributedText = NSAttributedString (
             string: card_Balance,
-            attributes: Attr.twentyThreeBold
+            attributes: exist ? Attr.twentyThreeBold : Attr.fourteenMedGr
         )
         
         if let barcodeImg = barcodeImg {
@@ -169,21 +188,56 @@ extension PayCellNode {
         }
         
         visibleContentArray = exist ?
-        [cardImgNode, cardNameLayoutSpec(), cardBalanceNode, barcodeImgNode, barcodeNumNode,
-         validTimeNode, chargeBtnLayoutSpec().styled{$0.alignSelf = .stretch}] : [cardImgNode, cardNameNode, cardBalanceNode]
+        [
+            cardImgNode,
+            cardInfoLayoutSpec().styled{
+                $0.spacingBefore = 26
+                $0.spacingAfter = 8 },
+            barcodeLayoutSpec(),
+            timerLayoutSpec().styled {
+                $0.spacingBefore = 8
+                $0.spacingAfter = 33 },
+            chargeBtnLayoutSpec().styled{$0.alignSelf = .stretch}
+        ]
+        :
+        [
+            cardImgNode,
+            cardNameNode.styled{
+                $0.spacingBefore = 26
+                $0.spacingAfter = 11
+            },
+            cardBalanceNode
+        ]
     }
     
     // MARK: Etc
-//    private func setRepeatTimer(_ interval: TimeInterval, _ rp: Bool) {
-//        Timer.scheduledTimer(withTimeInterval: interval, repeats: rp) { [weak self] timer in
-//            self?.timeLeft -= 1
-//            if self?.timeLeft ?? 0 <= 0 {
+//    @objc
+//    private func setTimer() {
+//        print("called")
+//        if timeLeft <= 0 {
+//            if let timer = timer {
 //                timer.invalidate()
 //            }
-//            let hour = String(format: "%02d", Int(self?.timeLeft ?? 600/60))
-//            let minute = String(format: "%02d", Int(self?.timeLeft ?? 600%60))
-//            let timeToStr = "\(hour):\(minute)"
-//            self?.validTimeNode.attributedText = NSAttributedString(string: timeToStr, attributes: Attr.twelveSM)
 //        }
+//
+//        timeLeft -= 1
+//        let hour = String(format: "%02d", Int(timeLeft/60))
+//        let minute = String(format: "%02d", Int(timeLeft-(hour*60)))
+//        let timeToStr = "\(hour):\(minute)"
+//        validTimeNode.attributedText = NSAttributedString(string: timeToStr, attributes: Attr.twelveSM)
 //    }
+    
+    private func setRepeatTimer(_ interval: TimeInterval, _ rp: Bool) {
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: rp) { [weak self] timer in
+            guard let self = self else { return }
+            self.timeLeft -= 1
+            if self.timeLeft <= 0 {
+                timer.invalidate()
+            }
+            let hour = String(format: "%02d", Int(self.timeLeft/60))
+            let minute = String(format: "%02d", Int(self.timeLeft - (Int(hour)!*60)))
+            let timeToStr = "\(hour):\(minute)"
+            self.validTimerNode.attributedText = NSAttributedString(string: timeToStr, attributes:  Attr.twelveBoldGr)
+        }
+    }
 }

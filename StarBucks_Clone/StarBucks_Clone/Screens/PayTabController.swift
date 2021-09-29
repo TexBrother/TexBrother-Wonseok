@@ -6,92 +6,109 @@
 //
 
 import AsyncDisplayKit
+import CoreGraphics
+import UIKit
 
 final class PayTabController: ASDKViewController<ASScrollNode> {
+    
     // MARK: UI
-    // Not Yet    
+    
+    private let rootScrollNode = ASScrollNode().then {
+        $0.automaticallyManagesSubnodes = true
+        $0.automaticallyManagesContentSize = true
+        $0.automaticallyRelayoutOnSafeAreaChanges = true
+        $0.backgroundColor = .blue
+        $0.scrollableDirections = [.up, .down]
+    }
+    
     private lazy var adBanner = ASImageNode().then {
         $0.image = UIImage(named: "bannerSample")
         $0.contentMode = .scaleToFill
         $0.style.preferredSize = CGSize(width: UIScreen.main.bounds.width, height: 80)
+        $0.style.maxHeight = ASDimension(unit: .points, value: 80)
     }
+    
     private lazy var detailBtn = UIButton().then {
         $0.setImage(UIImage(systemName: "list.bullet"), for: .normal)
         $0.setPreferredSymbolConfiguration(.init(pointSize: 17, weight: .regular, scale: .large), forImageIn: .normal)
         $0.tintColor = .lightGray
     }
     
-    private let collectionViewLayout = UICollectionViewFlowLayout().then {
-        $0.scrollDirection = .horizontal
-    }
-    
+    private let collectionViewLayout = UICollectionViewFlowLayout().then { $0.scrollDirection = .horizontal }
     private lazy var cardCollecionNode = ASCollectionNode(collectionViewLayout: collectionViewLayout).then {
         $0.delegate = self
         $0.dataSource = self
         $0.backgroundColor = .systemBackground
-        $0.style.maxSize = CGSize(width: UIScreen.main.bounds.width, height: 475)
-//        $0.style.preferredSize = CGSize(width: UIScreen.main.bounds.width, height: 488)
+        $0.showsHorizontalScrollIndicator = false
+        $0.style.maxSize = CGSize(width: UIScreen.main.bounds.width, height: 500)
     }
+    
+    // MARK: Variables
+    
     private lazy var menuNode = PayMenuNode()
     private var contentLayoutArray = [ASLayoutElement]()
     
-    // MARK: Initializing
+    
+    // MARK: Background Thread
+    
     override init() {
-        super.init(node: .init())
-        self.node.automaticallyManagesSubnodes = true
-        self.node.automaticallyManagesContentSize = true
-        self.node.backgroundColor = .blue
+        super.init(node: rootScrollNode)
+        
+        // MARK: Main Thread
+        
         self.node.onDidLoad({ [weak self] _ in
             self?.setupNC()
         })
-        self.node.layoutSpecBlock = ({[weak self] (scrollNode, constrainedSize) -> ASLayoutSpec in
-            return self?.layoutSpecThatFits(constrainedSize) ?? ASLayoutSpec()
+        
+        // MARK: LayoutSpec
+        
+        rootScrollNode.layoutSpecBlock = ({[weak self] _, _ -> ASLayoutSpec in
+            guard let self = self else { return .init() }
+            
+            self.contentLayoutArray = cardListData.count > 0 ?
+            [self.cardCollecionNode, self.menuNode, self.adBanner] : [self.cardCollecionNode, self.adBanner]
+            
+            return ASStackLayoutSpec (
+                direction: .vertical,
+                spacing: 0.0,
+                justifyContent: .start,
+                alignItems: .start,
+                children: self.contentLayoutArray
+            )
         })
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Layout
-    private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
-        contentLayoutArray = CardListData.count > 0 ?
-        [cardCollecionNode, menuNode, adBanner] : [cardCollecionNode.styled{$0.flexShrink = 1.0}, adBanner.styled{$0.flexShrink = 1.0}]
-
-        return ASStackLayoutSpec (
-            direction: .vertical,
-            spacing: 0.0,
-            justifyContent: .start,
-            alignItems: .center,
-            children: contentLayoutArray
-        )
-    }
+    }    
 }
+
+// MARK: Extension
+// MARK: Protocols
 
 extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {
     
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
-        return CardListData.count > 0 ? CardListData.count : 1
+        return cardListData.count > 0 ? cardListData.count : 1
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, nodeBlockForItemAt indexPath: IndexPath) -> ASCellNodeBlock {
         return {
-            let dataNum = CardListData.count > 0 ? CardListData.count : 1
+            let dataNum = cardListData.count > 0 ? cardListData.count : 1
             guard dataNum > indexPath.row else { return ASCellNode() }
-            return CardListData.count > 0 ? PayCellNode(model: CardListData[indexPath.row]) : PayCellNode(model: nil)
+            return cardListData.count > 0 ? PayCellNode(model: cardListData[indexPath.row]) : PayCellNode(model: nil)
         }
     }
     
     func collectionNode(_ collectionNode: ASCollectionNode, constrainedSizeForItemAt indexPath: IndexPath) -> ASSizeRange {
         var itemWidth: CGFloat = UIScreen.main.bounds.width
-        itemWidth =  CardListData.count > 0 ? itemWidth-34 : itemWidth-24
+        itemWidth =  cardListData.count > 0 ?  itemWidth-24 : itemWidth-34
         return ASSizeRange (min: .zero, max: .init(width: itemWidth, height: .infinity))
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         var insetForSection = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
-        insetForSection =  CardListData.count > 0 ?
-        UIEdgeInsets(top: 0, left: 17, bottom: 0, right: 17) : insetForSection
+        insetForSection =  cardListData.count > 0 ? insetForSection : UIEdgeInsets(top: 0, left: 17, bottom: 0, right: 17)
         
         return insetForSection
     }
@@ -101,27 +118,27 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
     }
 }
 
+// MARK: Method
+
 extension PayTabController {
     
-    // MARK: - Custom Method
     private func setupNC() {
         let barButton = UIBarButtonItem(customView: detailBtn)
         navigationItem.rightBarButtonItem = barButton
         navigationItem.title = "Pay"
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .automatic
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .white
-        //        navigationController?.navigationBar.shadowImage = UIImage()
         
         let normalNaviBarAppearance = UINavigationBarAppearance().then {
             $0.shadowImage = UIImage()
-            $0.backgroundColor = .systemBackground
             $0.shadowColor = nil
+            $0.backgroundColor = .systemBackground
         }
         navigationController?.navigationBar.standardAppearance = normalNaviBarAppearance
-        navigationController?.navigationBar.dropShadow(color: .darkGray, offSet: CGSize(width: 0, height: 0), opacity: 0.5, radius: 5)
+//        navigationController?.navigationBar.dropShadow(color: .darkGray, offSet: CGSize(width: 0, height: 0), opacity: 0.5, radius: 5)
         
         let naviBarAppearance = UINavigationBarAppearance().then {
             $0.shadowImage = UIImage()
@@ -129,5 +146,6 @@ extension PayTabController {
             $0.shadowColor = nil
         }
         navigationController?.navigationBar.scrollEdgeAppearance = naviBarAppearance
+                navigationController?.navigationBar.dropShadow(color: .darkGray, offSet: CGSize(width: 0, height: 0), opacity: 0.0, radius: 0)
     }
 }

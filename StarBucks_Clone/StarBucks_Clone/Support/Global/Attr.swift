@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: Attributes
+
 public struct Attr {
     static var twelveSM: [NSAttributedString.Key: Any] {
         return [.font: UIFont.systemFont(ofSize: 12.0, weight: .semibold),

@@ -8,25 +8,21 @@
 import AsyncDisplayKit
 
 final class CardImageNode: ASImageNode {
-    // MARK: Initializing
+    
+    // MARK: Background Thread
+    
     override init() {
         super.init()
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
     }
     
-    // MARK: Node Life Cycle
+    // MARK: Main Thead
+    
     override func layout() {
         super.layout()
         self.clipsToBounds = true
         self.backgroundColor = .clear
-        self.image = UIImage(named: "cardSample")
         self.contentMode = .scaleAspectFill
     }
-    
-    // MARK: Layout
-    // 배너 이미지 1:1 비율
-//    func contentLayoutSpec() -> ASLayoutSpec {
-//        return ASRatioLayoutSpec (ratio: 1.0, child: absoluteLayoutSpec)
-//    }
 }

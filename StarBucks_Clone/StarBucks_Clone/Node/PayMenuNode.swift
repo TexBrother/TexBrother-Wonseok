@@ -8,11 +8,14 @@
 import AsyncDisplayKit
 
 final class PayMenuNode: ASDisplayNode {
+    
     // MARK: UI
+    
     private lazy var couponBtn = ASButtonNode().then {
         $0.setTitle("Coupon", with: UIFont.systemFont(ofSize: 15, weight: .bold), with: .black, for: .normal)
         $0.backgroundColor = .systemBackground
     }
+    
     private lazy var eGiftBtn = ASButtonNode().then {
         $0.setTitle("e-Gift Item", with: UIFont.systemFont(ofSize: 15, weight: .bold), with: .black, for: .normal)
         $0.backgroundColor = .systemBackground
@@ -23,7 +26,8 @@ final class PayMenuNode: ASDisplayNode {
         $0.style.preferredSize = CGSize(width: 1, height: 10)
     }
     
-    // MARK: Init
+    // MARK: Background Thread
+    
     override init() {
         super.init()
         self.backgroundColor = .systemBackground
@@ -35,7 +39,7 @@ final class PayMenuNode: ASDisplayNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Layout
+    // MARK: LayoutSpecs
     override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .horizontal,

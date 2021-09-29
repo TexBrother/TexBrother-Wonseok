@@ -14,97 +14,104 @@ final class PayCellNode: ASCellNode {
     
     private lazy var cardImgNode = CardImageNode().then {
         $0.clipsToBounds = true
-        $0.style.height = ASDimension(unit: .points, value: 186)
+        $0.style.height = ASDimension(unit: .points, value: 189)
         $0.contentMode = .scaleAspectFit
     }
+    
     private lazy var cardNameNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
     }
+    
     private lazy var cardStarNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "star"), for: .normal)
     }
+    
     private lazy var cardBalanceNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 0
     }
+    
     private lazy var barcodeImgNode = ASImageNode().then {
         $0.clipsToBounds = true
         $0.contentMode = .scaleAspectFit
     }
+    
     private lazy var barcodeNumNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
     }
+    
     private lazy var validTimeTextNode = ASTextNode().then {
         $0.attributedText = NSAttributedString(string: "바코드 유효시간", attributes: Attr.twelveSM)
     }
+    
     private lazy var validTimerNode = ASTextNode().then {
         $0.attributedText = NSAttributedString(string: "10:00", attributes: Attr.twelveBoldGr)
     }
+    
+    // TODO: 타이머 Reset버튼
+    
     private lazy var autoChargeBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "autoCharge"), for: .normal)
     }
+    
     private lazy var autoChargeTextNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.attributedText = NSAttributedString(string: "자동충전", attributes: Attr.twelveSM)
     }
+    
     private lazy var normalChargeBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "normalCharge"), for: .normal)
     }
+    
     private lazy var normalChargeTextNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.attributedText = NSAttributedString(string: "일반충전", attributes: Attr.twelveSM)
     }
+    
+    // MARK: Variables
+    
     private var visibleContentArray = [ASLayoutElement]()
-    var timeLeft = 600
     var timer: Timer?
+    var timerInfo = (600, 1.0, true)
     
     
-    // MARK: Initializing
+    // MARK: Background Thread
     
     init(model: CardInfo?) {
         super.init()
         print("LOG >>>>> init")
-        self.backgroundColor = .systemBackground
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
+        
+        self.backgroundColor = .systemBackground
         self.style.minHeight = ASDimension(unit: .points, value: 445)
+        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 3), opacity: 0.16, blur: 6)
+        
         // 등록된 카드가 있을 때
         if let data = model {
-            timeLeft = 600
-            setData(
-                exist: true,
-                cardImg: data.cardImgName,
-                card_Name: data.name,
-                card_Balance: data.balance,
-                barcodeImg: data.barcodeImgName,
-                barcode_Num: data.barcodeNum
-            )
+            setData(exist: true, data: data)
+            
             // 등록된 카드가 하나도 없을 때
         } else {
-            timeLeft = 0
-            setData(
-                exist: false,
-                cardImg: "cardSample",
-                card_Name: "스타벅스 카드를 등록해보세요.",
-                card_Balance: "매장과 사이렌오더에서 쉽고 편리하게\n사용할 수 있고, 별도 적립할 수 있습니다.",
-                barcodeImg: nil, barcode_Num: nil
-            )
+            timerInfo.0 = 0
+            setData(exist: false, data: cardPlainData)
         }
     }
     
+    // MARK: Main Thread
+    
     override func didLoad() {
-        self.setRepeatTimer(1.0, true)
+        self.setRepeatTimer(timeInterval: timerInfo.1, rp: timerInfo.2)
     }
     
-    // MARK: Node Life Cycle, Main Thread
     override func layout() {
         super.layout()
-        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 3), opacity: 0.2, blur: 5)
     }
 }
 
+// MARK: Extension
 
 extension PayCellNode {
     
@@ -165,22 +172,22 @@ extension PayCellNode {
     
     // MARK: Data Binding
     
-    private func setData(exist: Bool, cardImg: String, card_Name: String, card_Balance: String, barcodeImg: String?, barcode_Num: String?){
-        cardImgNode.image = UIImage(named: cardImg)
+    private func setData(exist: Bool, data: CardInfo){
+        cardImgNode.image = UIImage(named: data.cardImgName)
         cardNameNode.attributedText = NSAttributedString (
-            string: card_Name,
+            string: data.name,
             attributes: exist ? Attr.thirteenSM : Attr.seventeenSM
         )
         cardBalanceNode.attributedText = NSAttributedString (
-            string: card_Balance,
+            string: data.balance,
             attributes: exist ? Attr.twentyThreeBold : Attr.fourteenMedGr
         )
         
-        if let barcodeImg = barcodeImg {
+        if let barcodeImg = data.barcodeImgName {
             barcodeImgNode.image = UIImage(named: barcodeImg)
         }
         
-        if let barcode_Num = barcode_Num {
+        if let barcode_Num = data.barcodeNum {
             barcodeNumNode.attributedText = NSAttributedString (
                 string: barcode_Num,
                 attributes: Attr.fifteenReg
@@ -190,19 +197,24 @@ extension PayCellNode {
         visibleContentArray = exist ?
         [
             cardImgNode,
-            cardInfoLayoutSpec().styled{
+            cardInfoLayoutSpec().styled
+            {
                 $0.spacingBefore = 26
-                $0.spacingAfter = 8 },
+                $0.spacingAfter = 8
+            },
             barcodeLayoutSpec(),
-            timerLayoutSpec().styled {
+            timerLayoutSpec().styled
+            {
                 $0.spacingBefore = 8
-                $0.spacingAfter = 33 },
+                $0.spacingAfter = 33
+            },
             chargeBtnLayoutSpec().styled{$0.alignSelf = .stretch}
         ]
         :
         [
             cardImgNode,
-            cardNameNode.styled{
+            cardNameNode.styled
+            {
                 $0.spacingBefore = 26
                 $0.spacingAfter = 11
             },
@@ -210,32 +222,17 @@ extension PayCellNode {
         ]
     }
     
-    // MARK: Etc
-//    @objc
-//    private func setTimer() {
-//        print("called")
-//        if timeLeft <= 0 {
-//            if let timer = timer {
-//                timer.invalidate()
-//            }
-//        }
-//
-//        timeLeft -= 1
-//        let hour = String(format: "%02d", Int(timeLeft/60))
-//        let minute = String(format: "%02d", Int(timeLeft-(hour*60)))
-//        let timeToStr = "\(hour):\(minute)"
-//        validTimeNode.attributedText = NSAttributedString(string: timeToStr, attributes: Attr.twelveSM)
-//    }
+    // MARK: Method
     
-    private func setRepeatTimer(_ interval: TimeInterval, _ rp: Bool) {
-        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: rp) { [weak self] timer in
+    private func setRepeatTimer(timeInterval: TimeInterval, rp: Bool) {
+        timer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: rp) { [weak self] timer in
             guard let self = self else { return }
-            self.timeLeft -= 1
-            if self.timeLeft <= 0 {
+            self.timerInfo.0 -= 1
+            if self.timerInfo.0 <= 0 {
                 timer.invalidate()
             }
-            let hour = String(format: "%02d", Int(self.timeLeft/60))
-            let minute = String(format: "%02d", Int(self.timeLeft - (Int(hour)!*60)))
+            let hour = String(format: "%02d", Int(self.timerInfo.0 / 60))
+            let minute = String(format: "%02d", Int(self.timerInfo.0 - (Int(hour)!*60)))
             let timeToStr = "\(hour):\(minute)"
             self.validTimerNode.attributedText = NSAttributedString(string: timeToStr, attributes:  Attr.twelveBoldGr)
         }

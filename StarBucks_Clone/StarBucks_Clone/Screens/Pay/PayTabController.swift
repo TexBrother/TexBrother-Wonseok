@@ -17,7 +17,7 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         $0.automaticallyManagesSubnodes = true
         $0.automaticallyManagesContentSize = true
         $0.automaticallyRelayoutOnSafeAreaChanges = true
-        $0.backgroundColor = .blue
+        $0.backgroundColor = .systemBackground
         $0.scrollableDirections = [.up, .down]
     }
     
@@ -35,7 +35,8 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
     }
     
     private let collectionViewLayout = UICollectionViewFlowLayout().then { $0.scrollDirection = .horizontal }
-    private lazy var cardCollecionNode = ASCollectionNode(collectionViewLayout: collectionViewLayout).then {
+    private lazy var cardCollecionNode = ASCollectionNode(frame: .zero, collectionViewLayout: collectionViewLayout).then {
+        $0.isPagingEnabled = true
         $0.delegate = self
         $0.dataSource = self
         $0.backgroundColor = .systemBackground
@@ -59,7 +60,7 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         self.node.onDidLoad({ [weak self] _ in
             self?.setupNC()
         })
-        
+
         // MARK: LayoutSpec
         
         rootScrollNode.layoutSpecBlock = ({[weak self] _, _ -> ASLayoutSpec in
@@ -80,14 +81,20 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }    
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = false
+        self.setupNC()
+    }
 }
 
 // MARK: Extension
 // MARK: Protocols
 
-extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {
-    
+extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {    
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         return cardListData.count > 0 ? cardListData.count : 1
     }
@@ -97,6 +104,16 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
             let dataNum = cardListData.count > 0 ? cardListData.count : 1
             guard dataNum > indexPath.row else { return ASCellNode() }
             return cardListData.count > 0 ? PayCellNode(model: cardListData[indexPath.row]) : PayCellNode(model: nil)
+        }
+    }
+    
+    func collectionNode(_ collectionNode: ASCollectionNode, didSelectItemAt indexPath: IndexPath) {
+        if cardListData.count > 0 {
+            let data = cardListData[indexPath.row]
+            let dvc = CardDetailController(model: data)
+            self.navigationController?.pushViewController(dvc, animated: true)
+        } else {
+            print("카드를 등록해주시죠")
         }
     }
     
@@ -113,8 +130,8 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
         return insetForSection
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
     }
 }
 
@@ -124,28 +141,13 @@ extension PayTabController {
     
     private func setupNC() {
         let barButton = UIBarButtonItem(customView: detailBtn)
-        navigationItem.rightBarButtonItem = barButton
-        navigationItem.title = "Pay"
-        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .automatic
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.barTintColor = .white
-        
-        let normalNaviBarAppearance = UINavigationBarAppearance().then {
-            $0.shadowImage = UIImage()
-            $0.shadowColor = nil
-            $0.backgroundColor = .systemBackground
-        }
-        navigationController?.navigationBar.standardAppearance = normalNaviBarAppearance
-//        navigationController?.navigationBar.dropShadow(color: .darkGray, offSet: CGSize(width: 0, height: 0), opacity: 0.5, radius: 5)
-        
-        let naviBarAppearance = UINavigationBarAppearance().then {
-            $0.shadowImage = UIImage()
-            $0.backgroundColor = .systemBackground
-            $0.shadowColor = nil
-        }
-        navigationController?.navigationBar.scrollEdgeAppearance = naviBarAppearance
-                navigationController?.navigationBar.dropShadow(color: .darkGray, offSet: CGSize(width: 0, height: 0), opacity: 0.0, radius: 0)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 4), opacity: 0.16, radius: 5)
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.rightBarButtonItem = barButton
+        navigationItem.title = "Pay"
     }
 }

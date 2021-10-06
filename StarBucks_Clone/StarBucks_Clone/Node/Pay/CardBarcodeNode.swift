@@ -53,24 +53,14 @@ extension CardBarcodeNode {
     // MARK: Layout
     
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
-        return ASInsetLayoutSpec (
-            insets: UIEdgeInsets(top: 19, left: 20, bottom: 20, right: 20),
-            child: contentLayoutSpec()
-        )
-    }
-    
-    private func contentLayoutSpec() -> ASLayoutSpec {
         return ASStackLayoutSpec (
             direction: .vertical,
-            spacing: 0,
+            spacing: 8,
             justifyContent: .start,
             alignItems: .center,
             children: [
                 barcodeLayoutSpec(),
-                timerLayoutSpec().styled
-                {
-                    $0.spacingBefore = 8
-                }
+                timerLayoutSpec()
             ]
         )
     }

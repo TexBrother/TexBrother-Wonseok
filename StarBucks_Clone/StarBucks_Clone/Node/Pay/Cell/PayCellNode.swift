@@ -36,6 +36,8 @@ final class PayCellNode: ASCellNode {
     
     private lazy var autoChargeBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "autoCharge"), for: .normal)
+        $0.style.preferredSize = CGSize(width: 24, height: 25)
+        $0.contentMode = .scaleToFill
     }
     
     private lazy var autoChargeTextNode = ASTextNode().then {
@@ -45,6 +47,8 @@ final class PayCellNode: ASCellNode {
     
     private lazy var normalChargeBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(named: "normalCharge"), for: .normal)
+        $0.style.preferredSize = CGSize(width: 24, height: 25)
+        $0.contentMode = .scaleToFill
     }
     
     private lazy var normalChargeTextNode = ASTextNode().then {
@@ -171,12 +175,10 @@ extension PayCellNode {
             cardImgNode,
             cardInfoLayoutSpec().styled {
                 $0.spacingBefore = 26
-                $0.spacingAfter = 8
+                $0.spacingAfter = 10
             },
-            barcodeAreaNode.styled {
-                $0.spacingAfter = 33
-            },
-            chargeBtnLayoutSpec().styled{$0.alignSelf = .stretch}
+            barcodeAreaNode.styled { $0.spacingAfter = 20 },
+            chargeBtnLayoutSpec().styled{ $0.alignSelf = .stretch }
         ]
         :
         [

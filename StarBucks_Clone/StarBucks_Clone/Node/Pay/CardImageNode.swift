@@ -15,14 +15,9 @@ final class CardImageNode: ASImageNode {
         super.init()
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
-    }
-    
-    // MARK: Main Thead
-    
-    override func layout() {
-        super.layout()
+        
         self.clipsToBounds = true
         self.backgroundColor = .clear
-        self.contentMode = .scaleAspectFill
+        self.contentMode = .scaleToFill
     }
 }

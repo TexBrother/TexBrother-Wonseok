@@ -20,8 +20,8 @@ struct CardInfo {
 // MARK: Mock Data
 
 var cardListData: [CardInfo] = [
-    CardInfo(cardImgName: "cardSample", name: "카드", balance: "4,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582"),
-    CardInfo(cardImgName: "cardSample", name: "카드", balance: "4,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582")
+    CardInfo(cardImgName: "cardSample", name: "첫번째 카드", balance: "59,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582"),
+    CardInfo(cardImgName: "cardSample2", name: "두번째 카드", balance: "14,000원", barcodeImgName: "barcord", barcodeNum: "****-****-**36-6582")
 ]
 
 //var cardListData = [CardInfo]()

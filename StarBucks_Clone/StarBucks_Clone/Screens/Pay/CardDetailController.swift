@@ -15,7 +15,8 @@ final class CardDetailController: ASDKViewController<ASDisplayNode> {
     private lazy var cardNameNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
-        $0.attributedText = NSAttributedString(string: "카드이름", attributes: Attr.twentyEightBold)
+        $0.attributedText = NSAttributedString(string: "카드이름",
+                                               attributes: Attr.setFont(size: 28, weight: .bold))
     }
     
     private lazy var cardEditBtn = ASButtonNode().then {
@@ -25,13 +26,15 @@ final class CardDetailController: ASDKViewController<ASDisplayNode> {
     private lazy var cardBalanceNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
-        $0.attributedText = NSAttributedString(string: "카드 잔액", attributes: Attr.fifteenReg)
+        $0.attributedText = NSAttributedString(string: "카드 잔액",
+                                               attributes: Attr.setFont(size: 15))
     }
     
     private lazy var cardBalanceNumNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
         $0.maximumNumberOfLines = 1
-        $0.attributedText = NSAttributedString(string: "300원", attributes: Attr.twentyThreeBold)
+        $0.attributedText = NSAttributedString(string: "300원",
+                                               attributes: Attr.setFont(size: 23, weight: .bold))
     }
     
     private lazy var cardImageNode = CardImageNode().then {
@@ -66,13 +69,7 @@ final class CardDetailController: ASDKViewController<ASDisplayNode> {
         // MARK: Main Thread
         
         self.node.onDidLoad({ [weak self] _ in
-            guard let self = self else { return }
-            self.cardBardcodeNode.setRepeatTimer(totalTime: 600, timeInterval: 1.0, rp: true)
-            self.tabBarController?.tabBar.isHidden = true
-            self.tabBarController?.tabBar.isTranslucent = true
-            self.navigationController?.navigationBar.tintColor = .seaweedGreen
-            self.navigationItem.largeTitleDisplayMode = .never
-            self.menuTableNode.view.separatorStyle = .none
+            self?.setStyle()
         })
     }
     
@@ -115,19 +112,27 @@ extension CardDetailController {
         return ASInsetLayoutSpec(insets: inset, child: headerContentLayout)
     }
     
-    // MARK: Data Binding
+    // MARK: Etc
+    
+    private func setStyle() {
+        self.cardBardcodeNode.setRepeatTimer(totalTime: 600, timeInterval: 1.0, rp: true)
+        self.tabBarController?.tabBar.isHidden = true
+        self.tabBarController?.tabBar.isTranslucent = true
+        self.navigationItem.largeTitleDisplayMode = .never
+        self.menuTableNode.view.separatorStyle = .none
+    }
     
     private func setData(data: CardInfo){
         cardImageNode.image = UIImage(named: data.cardImgName)
         
         cardNameNode.attributedText = NSAttributedString (
             string: data.name,
-            attributes: Attr.twentyEightBold
+            attributes: Attr.setFont(size: 28, weight: .bold)
         )
         
         cardBalanceNumNode.attributedText = NSAttributedString (
             string: data.balance,
-            attributes: Attr.twentyThreeBold
+            attributes: Attr.setFont(size: 23, weight: .bold)
         )
         
         if let barcodeImg = data.barcodeImgName {
@@ -137,7 +142,7 @@ extension CardDetailController {
         if let barcode_Num = data.barcodeNum {
             cardBardcodeNode.barcodeNumNode.attributedText = NSAttributedString (
                 string: barcode_Num,
-                attributes: Attr.fifteenReg
+                attributes: Attr.setFont(size: 15)
             )
         }
     }

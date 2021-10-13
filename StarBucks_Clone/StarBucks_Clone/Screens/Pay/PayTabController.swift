@@ -58,7 +58,7 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         // MARK: Main Thread
         
         self.node.onDidLoad({ [weak self] _ in
-            self?.setupNC()
+            self?.setStyle()
         })
 
         // MARK: LayoutSpec
@@ -85,16 +85,39 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
     
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
-        self.setupNC()
+        self.setStyle()
     }
 }
 
 // MARK: Extension
+
+extension PayTabController {
+    
+    private func setStyle() {
+        tabBarController?.tabBar.isHidden = false
+        tabBarController?.tabBar.isTranslucent = false
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.tintColor = .lightGray
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 4), opacity: 0.16, radius: 5)
+        navigationItem.title = "Pay"
+        navigationItem.backButtonTitle = ""
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self,
+                                                                 action: #selector(nextVC))
+    }
+    
+    @objc
+    private func nextVC() {
+        self.navigationController?.pushViewController(CardListController(), animated: true)
+    }
+}
+
 // MARK: Protocols
 
-extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {    
+extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         return cardListData.count > 0 ? cardListData.count : 1
     }
@@ -132,22 +155,5 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10
-    }
-}
-
-// MARK: Method
-
-extension PayTabController {
-    
-    private func setupNC() {
-        let barButton = UIBarButtonItem(customView: detailBtn)
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 4), opacity: 0.16, radius: 5)
-        navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.rightBarButtonItem = barButton
-        navigationItem.title = "Pay"
     }
 }

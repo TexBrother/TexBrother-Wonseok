@@ -42,7 +42,8 @@ final class PayCellNode: ASCellNode {
     
     private lazy var autoChargeTextNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
-        $0.attributedText = NSAttributedString(string: "자동충전", attributes: Attr.twelveSM)
+        $0.attributedText = NSAttributedString(string: "자동충전",
+                                               attributes: Attr.setFont(size: 12, weight: .semibold))
     }
     
     private lazy var normalChargeBtnNode = ASButtonNode().then {
@@ -53,7 +54,8 @@ final class PayCellNode: ASCellNode {
     
     private lazy var normalChargeTextNode = ASTextNode().then {
         $0.style.flexShrink = 1.0
-        $0.attributedText = NSAttributedString(string: "일반충전", attributes: Attr.twelveSM)
+        $0.attributedText = NSAttributedString(string: "일반충전",
+                                               attributes: Attr.setFont(size: 12, weight: .semibold))
     }
     
     // MARK: Variables
@@ -152,11 +154,12 @@ extension PayCellNode {
         cardImgNode.image = UIImage(named: data.cardImgName)
         cardNameNode.attributedText = NSAttributedString (
             string: data.name,
-            attributes: exist ? Attr.thirteenSM : Attr.seventeenSM
+            attributes: Attr.setFont(size: exist ? 13 : 17, weight: .semibold)
         )
         cardBalanceNode.attributedText = NSAttributedString (
             string: data.balance,
-            attributes: exist ? Attr.twentyThreeBold : Attr.fourteenMedGr
+            attributes: exist ?
+            Attr.setFont(size: 23, weight: .bold) : Attr.setFont(size: 14, weight: .medium, color: .gray)
         )
         
         if let barcodeImg = data.barcodeImgName {
@@ -166,7 +169,7 @@ extension PayCellNode {
         if let barcode_Num = data.barcodeNum {
             barcodeAreaNode.barcodeNumNode.attributedText = NSAttributedString (
                 string: barcode_Num,
-                attributes: Attr.fifteenReg
+                attributes: Attr.setFont(size: 15)
             )
         }
         

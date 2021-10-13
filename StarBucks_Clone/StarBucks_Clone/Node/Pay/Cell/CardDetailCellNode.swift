@@ -35,7 +35,7 @@ final class CardDetailCellNode: ASCellNode {
         
         // MARK: Data Binding
         self.iconNode.image = UIImage(named: model.iconImgName)
-        self.menuTitleNode.attributedText = NSAttributedString(string: model.menuTitle, attributes: Attr.fifteenReg)
+        self.menuTitleNode.attributedText = NSAttributedString(string: model.menuTitle, attributes: Attr.setFont(size: 15))
     }
     
     // MARK: Main Thread
@@ -55,12 +55,14 @@ extension CardDetailCellNode {
     // MARK: Layout
     
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
-        let contentLayout = ASStackLayoutSpec (direction: .horizontal, spacing: 0, justifyContent: .spaceBetween, alignItems: .center, children: [contentLayoutSpec(), enterBtnNode])
+        let contentLayout = ASStackLayoutSpec (direction: .horizontal, spacing: 0, justifyContent: .spaceBetween, alignItems: .center,
+                                               children: [contentLayoutSpec(), enterBtnNode])
         
         return ASInsetLayoutSpec(insets: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), child: contentLayout)
     }
     
     private func contentLayoutSpec() -> ASLayoutSpec {
-        return ASStackLayoutSpec(direction: .horizontal, spacing: 5, justifyContent: .start, alignItems: .center, children: [iconNode, menuTitleNode])
+        return ASStackLayoutSpec(direction: .horizontal, spacing: 5, justifyContent: .start, alignItems: .center,
+                                 children: [iconNode, menuTitleNode])
     }
 }

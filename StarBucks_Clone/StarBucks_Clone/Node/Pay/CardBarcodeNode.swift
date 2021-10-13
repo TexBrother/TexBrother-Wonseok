@@ -21,11 +21,13 @@ final class CardBarcodeNode: ASDisplayNode {
     }
     
     let validTimeTextNode = ASTextNode().then {
-        $0.attributedText = NSAttributedString(string: "바코드 유효시간", attributes: Attr.twelveSM)
+        $0.attributedText = NSAttributedString(string: "바코드 유효시간",
+                                               attributes: Attr.setFont(size: 12, weight: .semibold))
     }
     
     let validTimerNode = ASTextNode().then {
-        $0.attributedText = NSAttributedString(string: "10:00", attributes: Attr.twelveBoldGr)
+        $0.attributedText = NSAttributedString(string: "10:00",
+                                               attributes: Attr.setFont(size: 12, weight: .bold, color: .seaweedGreen))
     }
     
     // TODO: 타이머 Reset버튼
@@ -86,7 +88,8 @@ extension CardBarcodeNode {
             let hour = String(format: "%02d", Int(timeLeft / 60))
             let minute = String(format: "%02d", Int(timeLeft - (Int(hour)!*60)))
             let timeToStr = "\(hour):\(minute)"
-            self.validTimerNode.attributedText = NSAttributedString(string: timeToStr, attributes:  Attr.twelveBoldGr)
+            self.validTimerNode.attributedText = NSAttributedString(string: timeToStr,
+                                                                    attributes: Attr.setFont(size: 12, weight: .bold, color: .seaweedGreen))
         }
     }
 }

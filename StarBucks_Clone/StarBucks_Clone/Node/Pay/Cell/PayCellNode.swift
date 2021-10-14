@@ -23,8 +23,8 @@ final class PayCellNode: ASCellNode {
         $0.maximumNumberOfLines = 1
     }
     
-    private lazy var cardStarNode = ASButtonNode().then {
-        $0.setImage(UIImage(named: "star"), for: .normal)
+    private lazy var cardStarBtnNode = ASButtonNode().then {
+        $0.setImage(UIImage(named: "unStar"), for: .normal)
     }
     
     private lazy var cardBalanceNode = ASTextNode().then {
@@ -121,7 +121,7 @@ extension PayCellNode {
     }
     
     private func cardInfoLayoutSpec() -> ASLayoutSpec {
-        let cardNameStack = ASStackLayoutSpec(direction: .horizontal, spacing: 7, justifyContent: .center, alignItems: .center, children: [cardNameNode, cardStarNode])
+        let cardNameStack = ASStackLayoutSpec(direction: .horizontal, spacing: 7, justifyContent: .center, alignItems: .center, children: [cardNameNode, cardStarBtnNode])
         return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: .center, alignItems: .center, children: [cardNameStack, cardBalanceNode])
     }
     
@@ -171,6 +171,10 @@ extension PayCellNode {
                 string: barcode_Num,
                 attributes: Attr.setFont(size: 15)
             )
+        }
+        
+        if let represantiveStar = data.isStar {
+            cardStarBtnNode.imageNode.image = UIImage(named: represantiveStar ? "star" : "unStar")
         }
         
         visibleContentArray = exist ?

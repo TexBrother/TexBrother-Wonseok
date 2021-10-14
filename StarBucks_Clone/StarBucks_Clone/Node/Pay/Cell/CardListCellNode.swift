@@ -14,7 +14,7 @@ final class CardListCellNode: ASCellNode {
     private lazy var cardNameNode = ASTextNode()
     private lazy var cardBalanceNode = ASTextNode()
 //    private lazy var separatorLine = ASDisplayNode()
-    private lazy var representativeBtn = ASButtonNode().then {
+    private lazy var cardStarBtnNode = ASButtonNode().then {
         $0.imageNode.style.preferredSize = CGSize(width: 30, height: 30)
         $0.setImage(UIImage(named: "star"), for: .normal)
     }
@@ -43,6 +43,7 @@ final class CardListCellNode: ASCellNode {
 extension CardListCellNode {
     
     // MARK: Layout
+    
     override func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
         return ASInsetLayoutSpec(insets: UIEdgeInsets(top: 30, left: 20, bottom: 30, right: 20),
                                  child: contentLayoutSpec())
@@ -61,7 +62,7 @@ extension CardListCellNode {
         
         return ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .spaceBetween, alignItems: .center,
                                  children: [ withoutBtnLayoutSpec,
-                                             representativeBtn
+                                             cardStarBtnNode
                                            ])
     }
     
@@ -85,6 +86,9 @@ extension CardListCellNode {
             string: data.balance,
             attributes: Attr.setFont(size: isFirst ? 20 : 15, weight: .bold)
         )
+        if let represantiveStar = data.isStar {
+            cardStarBtnNode.setImage(UIImage(named: represantiveStar ? "star" : "unStar"), for: .normal)
+        }
     }
 }
 

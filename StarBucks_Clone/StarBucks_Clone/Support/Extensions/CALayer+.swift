@@ -20,7 +20,7 @@ extension CALayer {
         self.shadowOpacity = opacity
         // 그림자의 blur 설정
         self.shadowRadius = blur
-        // 구글링 해보세요!
+        
         self.masksToBounds = false
     }
     

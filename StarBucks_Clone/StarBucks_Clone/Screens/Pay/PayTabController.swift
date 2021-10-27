@@ -6,8 +6,7 @@
 //
 
 import AsyncDisplayKit
-import CoreGraphics
-import UIKit
+import Then
 
 final class PayTabController: ASDKViewController<ASScrollNode> {
     
@@ -52,25 +51,24 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         self.node.automaticallyManagesContentSize = true
         self.node.automaticallyRelayoutOnSafeAreaChanges = true
         self.node.backgroundColor = .systemBackground
-        self.node.scrollableDirections = [.up, .down]
-        
+
         // MARK: Main Thread
-        
+
         self.node.onDidLoad({ [weak self] _ in
             self?.edgesForExtendedLayout = []
             self?.setStyle()
         })
-        
+
         // MARK: LayoutSpec
         node.layoutSpecBlock = { [weak self] (scrollNode, constraintedSize) -> ASLayoutSpec in
             return self?.layoutSpecThatFits(constraintedSize) ?? ASLayoutSpec()
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setStyle()
@@ -83,10 +81,12 @@ extension PayTabController {
     
     // MARK: - Layout
     
-    private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
+    internal func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
         self.contentLayoutArray = cardListData.count > 0 ?
-        [cardCollecionNode, menuNode, adBanner] : [cardCollecionNode, adBanner]
-                    
+        [cardCollecionNode, menuNode, adBanner.styled {
+            $0.spacingAfter = 15
+        }] : [cardCollecionNode, adBanner]
+        
         return ASStackLayoutSpec (
             direction: .vertical,
             spacing: 0.0,
@@ -101,12 +101,13 @@ extension PayTabController {
     private func setStyle() {
         tabBarController?.tabBar.isHidden = false
         tabBarController?.tabBar.isTranslucent = false
+        // https://medium.com/@zieunv/ios-navigationbar의-istranslucent-영역에-대한-test-ca7ee6333a15
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .lightGray
         navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.tintColor = .lightGray
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 4), opacity: 0.16, radius: 5)
+        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 8), opacity: 0.16, radius: 3)
         navigationItem.title = "Pay"
         navigationItem.backButtonTitle = ""
         navigationItem.largeTitleDisplayMode = .automatic
@@ -162,4 +163,3 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
         return 10
     }
 }
-

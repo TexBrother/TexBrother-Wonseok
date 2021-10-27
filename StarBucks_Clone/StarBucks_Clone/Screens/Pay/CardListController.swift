@@ -49,7 +49,6 @@ extension CardListController {
         self.node.view.separatorInsetReference = .fromCellEdges
         self.navigationItem.title = "카드(\(cardListData.count))"
         self.navigationController?.navigationBar.largeTitleTextAttributes = Attr.setFont(size: 30, weight: .semibold)
-        self.navigationController?.navigationBar.tintColor = .lightGray
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: nil)
         self.tabBarController?.tabBar.isHidden = true
         self.tabBarController?.tabBar.isTranslucent = true

@@ -8,7 +8,7 @@
 import AsyncDisplayKit
 import Then
 
-final class CardDetailController: ASDKViewController<ASDisplayNode> {
+final class CardDetailController: BaseViewController {
     
     // MARK: UI
     
@@ -54,27 +54,23 @@ final class CardDetailController: ASDKViewController<ASDisplayNode> {
     // MARK: Background Thread
     
     init(model: CardInfo) {
-        super.init(node: .init())
-        self.node.backgroundColor = .systemBackground
-        self.node.automaticallyManagesSubnodes = true
-        self.node.automaticallyRelayoutOnSafeAreaChanges = true
+        super.init()
         self.setData(data: model)
-        
-        // MARK: LayoutSpec
-        
-        self.node.layoutSpecBlock = { [weak self] (node, constraintedSize) -> ASLayoutSpec in
-            return self?.layoutSpecThatFits(constraintedSize) ?? ASLayoutSpec()
-        }
-        
-        // MARK: Main Thread
-        
-        self.node.onDidLoad({ [weak self] _ in
-            self?.setStyle()
-        })
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSpecThatFits(_ constrainedSize: ASSizeRange) -> ASLayoutSpec {
+        return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: .start, alignItems: .stretch,
+                                 children: [headerLayoutSpec(), menuTableNode.styled { $0.flexGrow = 1.0 }])
+    }
+    
+    // MARK: Main Thread
+    
+    override func didLoad() {
+        self.setStyle()
     }
 }
 
@@ -84,11 +80,6 @@ final class CardDetailController: ASDKViewController<ASDisplayNode> {
 extension CardDetailController {
     
     // MARK: Layout
-    
-    private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
-        return ASStackLayoutSpec(direction: .vertical, spacing: 0, justifyContent: .start, alignItems: .stretch,
-                                 children: [headerLayoutSpec(), menuTableNode.styled { $0.flexGrow = 1.0 }])
-    }
     
     private func headerLayoutSpec() -> ASLayoutSpec {
         let cardNameArea = ASStackLayoutSpec(direction: .horizontal, spacing: 0, justifyContent: .spaceBetween, alignItems: .center,

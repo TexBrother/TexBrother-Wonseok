@@ -1,5 +1,5 @@
 //
-//  ASDisplayNode+.swift
+//  CALayer+.swift
 //  StarBucks_Clone
 //
 //  Created by Wonseok Lee on 2021/09/25.
@@ -7,11 +7,11 @@
 
 import AsyncDisplayKit
 
-extension ASDisplayNode {
+extension CALayer {
     
     // MARK: - Set ASDisplayNode's Shadow
     
-    func dropShadow(color: UIColor, offSet: CGSize, opacity: CGFloat, blur: CGFloat) {
+    func dropShadow(color: UIColor, offSet: CGSize, opacity: Float, blur: CGFloat) {
         // 그림자 색상 설정
         self.shadowColor = color.cgColor
         // 그림자 크기 설정
@@ -21,7 +21,7 @@ extension ASDisplayNode {
         // 그림자의 blur 설정
         self.shadowRadius = blur
         // 구글링 해보세요!
-        self.clipsToBounds = false
+        self.masksToBounds = false
     }
     
     // MARK: - Set ASDisplayNode's Radius
@@ -31,9 +31,10 @@ extension ASDisplayNode {
             self.cornerRadius = cornerRadius_
         }  else {
             // cornerRadius 가 nil 일 경우의 default
-            self.cornerRadius = self.layer.frame.height / 2
+            self.cornerRadius = self.frame.height / 2
         }
         
-        self.clipsToBounds = true
+        self.masksToBounds = true
     }
 }
+

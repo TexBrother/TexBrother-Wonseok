@@ -71,10 +71,8 @@ final class PayCellNode: ASCellNode {
         print("LOG >>>>> init")
         self.automaticallyManagesSubnodes = true
         self.automaticallyRelayoutOnSafeAreaChanges = true
-        
         self.backgroundColor = .systemBackground
         self.style.minHeight = ASDimension(unit: .points, value: 445)
-        self.dropShadow(color: .black, offSet: CGSize(width: 0, height: 3), opacity: 0.16, blur: 6)
         
         // 등록된 카드가 있을 때
         if let data = model {
@@ -89,6 +87,7 @@ final class PayCellNode: ASCellNode {
     // MARK: Main Thread
     
     override func didLoad() {
+        self.layer.dropShadow(color: .black, offSet: CGSize(width: 0, height: 3), opacity: 0.16, blur: 6)
         self.barcodeAreaNode.setRepeatTimer(totalTime: timeLeft, timeInterval: 1.0, rp: true)
     }
     

@@ -57,6 +57,7 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         // MARK: Main Thread
         
         self.node.onDidLoad({ [weak self] _ in
+            self?.edgesForExtendedLayout = []
             self?.setStyle()
         })
         

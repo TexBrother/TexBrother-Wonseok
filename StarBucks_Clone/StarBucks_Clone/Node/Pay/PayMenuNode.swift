@@ -31,6 +31,8 @@ final class PayMenuNode: ASDisplayNode {
     override init() {
         super.init()
         self.backgroundColor = .systemBackground
+        self.automaticallyManagesSubnodes = true
+        self.automaticallyRelayoutOnSafeAreaChanges = true
         self.style.preferredSize = CGSize(width: UIScreen.main.bounds.width, height: 70)
         automaticallyManagesSubnodes = true
     }

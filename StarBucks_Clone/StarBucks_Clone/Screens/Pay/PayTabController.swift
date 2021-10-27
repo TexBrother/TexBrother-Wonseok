@@ -1,5 +1,5 @@
 //
-//  PayTab.swift
+//  PayTabController.swift
 //  StarBucks_Clone
 //
 //  Created by Wonseok Lee on 2021/09/21.
@@ -13,19 +13,11 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
     
     // MARK: UI
     
-    private let rootScrollNode = ASScrollNode().then {
-        $0.automaticallyManagesSubnodes = true
-        $0.automaticallyManagesContentSize = true
-        $0.automaticallyRelayoutOnSafeAreaChanges = true
-        $0.backgroundColor = .systemBackground
-        $0.scrollableDirections = [.up, .down]
-    }
-    
     private lazy var adBanner = ASImageNode().then {
         $0.image = UIImage(named: "bannerSample")
         $0.contentMode = .scaleToFill
         $0.style.preferredSize = CGSize(width: UIScreen.main.bounds.width, height: 80)
-        $0.style.maxHeight = ASDimension(unit: .points, value: 80)
+        $0.style.height = ASDimension(unit: .points, value: 80)
     }
     
     private lazy var detailBtn = UIButton().then {
@@ -41,50 +33,45 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
         $0.dataSource = self
         $0.backgroundColor = .systemBackground
         $0.showsHorizontalScrollIndicator = false
-        $0.style.maxSize = CGSize(width: UIScreen.main.bounds.width, height: 500)
+        $0.style.height = ASDimension(unit: .points, value: 500)
     }
     
     // MARK: Variables
     
-    private lazy var menuNode = PayMenuNode()
+    private lazy var menuNode = PayMenuNode().then {
+        $0.style.height = ASDimension(unit: .points, value: 80)
+    }
     private var contentLayoutArray = [ASLayoutElement]()
     
     
     // MARK: Background Thread
     
     override init() {
-        super.init(node: rootScrollNode)
+        super.init(node: ASScrollNode())
+        self.node.automaticallyManagesSubnodes = true
+        self.node.automaticallyManagesContentSize = true
+        self.node.automaticallyRelayoutOnSafeAreaChanges = true
+        self.node.backgroundColor = .systemBackground
+        self.node.scrollableDirections = [.up, .down]
         
         // MARK: Main Thread
         
         self.node.onDidLoad({ [weak self] _ in
             self?.setStyle()
         })
-
-        // MARK: LayoutSpec
         
-        rootScrollNode.layoutSpecBlock = ({[weak self] _, _ -> ASLayoutSpec in
-            guard let self = self else { return .init() }
-            
-            self.contentLayoutArray = cardListData.count > 0 ?
-            [self.cardCollecionNode, self.menuNode, self.adBanner] : [self.cardCollecionNode, self.adBanner]
-            
-            return ASStackLayoutSpec (
-                direction: .vertical,
-                spacing: 0.0,
-                justifyContent: .start,
-                alignItems: .start,
-                children: self.contentLayoutArray
-            )
-        })
+        // MARK: LayoutSpec
+        node.layoutSpecBlock = { [weak self] (scrollNode, constraintedSize) -> ASLayoutSpec in
+            return self?.layoutSpecThatFits(constraintedSize) ?? ASLayoutSpec()
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.setStyle()
     }
 }
@@ -93,11 +80,28 @@ final class PayTabController: ASDKViewController<ASScrollNode> {
 
 extension PayTabController {
     
+    // MARK: - Layout
+    
+    private func layoutSpecThatFits(_ constraintedSize: ASSizeRange) -> ASLayoutSpec {
+        self.contentLayoutArray = cardListData.count > 0 ?
+        [cardCollecionNode, menuNode, adBanner] : [cardCollecionNode, adBanner]
+                    
+        return ASStackLayoutSpec (
+            direction: .vertical,
+            spacing: 0.0,
+            justifyContent: .start,
+            alignItems: .start,
+            children: self.contentLayoutArray
+        )
+    }
+    
+    // MARK: ETC
+    
     private func setStyle() {
         tabBarController?.tabBar.isHidden = false
         tabBarController?.tabBar.isTranslucent = false
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.tintColor = .lightGray
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -106,7 +110,7 @@ extension PayTabController {
         navigationItem.backButtonTitle = ""
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "list.bullet"), style: .plain, target: self,
-                                                                 action: #selector(nextVC))
+                                                            action: #selector(nextVC))
     }
     
     @objc
@@ -157,3 +161,4 @@ extension PayTabController: ASCollectionDataSource, ASCollectionDelegate, ASColl
         return 10
     }
 }
+

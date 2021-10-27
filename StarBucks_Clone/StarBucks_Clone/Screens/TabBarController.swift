@@ -8,9 +8,9 @@
 import AsyncDisplayKit
 
 final class TabBarController: ASTabBarController {
-    
+
     // MARK: UI
-    
+
     let HomeViewController = PayTabController()
     let PayViewController = PayTabController()
     let OrderViewController = PayTabController()
@@ -29,7 +29,7 @@ final class TabBarController: ASTabBarController {
 // MARK: Setup Functions
 
 extension TabBarController: UITabBarControllerDelegate {
-    
+
     private func setupTabBar(){
         delegate = self
         tabBar.shadowImage = UIImage()
@@ -39,48 +39,40 @@ extension TabBarController: UITabBarControllerDelegate {
         tabBar.tintColor = .seaweedGreen
         configureVCs()
     }
-    
+
     private func configureVCs(){
-        let homeNC = ASNavigationController(rootViewController: HomeViewController)
-        homeNC.navigationBar.isHidden = true
-
+        let homeNC = ASNavigationController(rootViewController: HomeViewController).then {
+            $0.isNavigationBarHidden = true
+        }
         let payNC = ASNavigationController(rootViewController: PayViewController)
-        payNC.navigationBar.isHidden = true
-
         let orderNC = ASNavigationController(rootViewController: OrderViewController)
-        orderNC.navigationBar.isHidden = true
-
         let giftNC = ASNavigationController(rootViewController: GiftViewController)
-        giftNC.navigationBar.isHidden = true
-
         let otherNC = ASNavigationController(rootViewController: OtherViewController)
-        otherNC.navigationBar.isHidden = true
 
         let tabs = [homeNC, payNC, orderNC, giftNC, otherNC]
         self.setViewControllers(tabs, animated: true)
         self.selectedIndex = 1
     }
-    
+
     private func setTabBarIcons(){
         let homeIcon = UITabBarItem(title: nil, image: UIImage(named: "home.fill"), tag: 0)
         homeIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         HomeViewController.tabBarItem = homeIcon
-        
+
         let payIcon = UITabBarItem(title: nil, image: UIImage(named: "pay.fill"), tag: 1)
         payIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         PayViewController.tabBarItem = payIcon
-        
+
         let orderIcon = UITabBarItem(title: nil, image: UIImage(named: "order.fill"), tag: 2)
         orderIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         OrderViewController.tabBarItem = orderIcon
-        
+
         let giftIcon = UITabBarItem(title: nil, image: UIImage(named: "gift.fill"), tag: 3)
         giftIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         GiftViewController.tabBarItem = giftIcon
-        
+
         let otherIcon = UITabBarItem(title: nil, image: UIImage(named: "other.fill"), tag: 4)
         otherIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         OtherViewController.tabBarItem = otherIcon
     }
 }
-

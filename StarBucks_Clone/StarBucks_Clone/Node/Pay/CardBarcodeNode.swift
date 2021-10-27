@@ -42,7 +42,8 @@ final class CardBarcodeNode: ASDisplayNode {
     override init() {
         super.init()
         self.backgroundColor = .systemBackground
-        automaticallyManagesSubnodes = true
+        self.automaticallyManagesSubnodes = true
+        self.automaticallyRelayoutOnSafeAreaChanges = true
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -16,7 +16,7 @@ final class CardListCellNode: ASCellNode {
 //    private lazy var separatorLine = ASDisplayNode()
     private lazy var cardStarBtnNode = ASButtonNode().then {
         $0.imageNode.style.preferredSize = CGSize(width: 30, height: 30)
-        $0.setImage(UIImage(named: "star"), for: .normal)
+        $0.setImage(Const.PayTab.star, for: .normal)
     }
     
     // MARK: Background Thread
@@ -87,7 +87,9 @@ extension CardListCellNode {
             attributes: Attr.setFont(size: isFirst ? 20 : 15, weight: .bold)
         )
         if let represantiveStar = data.isStar {
-            cardStarBtnNode.setImage(UIImage(named: represantiveStar ? "star" : "unStar"), for: .normal)
+            let star = Const.PayTab.starActivated
+            let unStar = Const.PayTab.star
+            cardStarBtnNode.setImage(represantiveStar ? star : unStar, for: .normal)
         }
     }
 }

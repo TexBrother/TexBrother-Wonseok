@@ -12,7 +12,7 @@ final class TabBarController: ASTabBarController {
     let HomeViewController = PayTabController()
     let PayViewController = PayTabController()
     let OrderViewController = PayTabController()
-    let GiftViewController = PayTabController()
+    let GiftViewController = GiftTabContrller()
     let OtherViewController = PayTabController()
     
     // MARK: Main Thread
@@ -51,23 +51,23 @@ extension TabBarController: UITabBarControllerDelegate {
     }
 
     private func setTabBarIcons(){
-        let homeIcon = UITabBarItem(title: nil, image: UIImage(named: "home.fill"), tag: 0)
+        let homeIcon = UITabBarItem(title: nil, image: Const.TabBar.homeActivated, tag: 0)
         homeIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         HomeViewController.tabBarItem = homeIcon
 
-        let payIcon = UITabBarItem(title: nil, image: UIImage(named: "pay.fill"), tag: 1)
+        let payIcon = UITabBarItem(title: nil, image: Const.TabBar.payActivated, tag: 1)
         payIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         PayViewController.tabBarItem = payIcon
 
-        let orderIcon = UITabBarItem(title: nil, image: UIImage(named: "order.fill"), tag: 2)
+        let orderIcon = UITabBarItem(title: nil, image: Const.TabBar.orderActivated, tag: 2)
         orderIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         OrderViewController.tabBarItem = orderIcon
 
-        let giftIcon = UITabBarItem(title: nil, image: UIImage(named: "gift.fill"), tag: 3)
+        let giftIcon = UITabBarItem(title: nil, image: Const.TabBar.giftActivated, tag: 3)
         giftIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         GiftViewController.tabBarItem = giftIcon
 
-        let otherIcon = UITabBarItem(title: nil, image: UIImage(named: "other.fill"), tag: 4)
+        let otherIcon = UITabBarItem(title: nil, image: Const.TabBar.otherActivated, tag: 4)
         otherIcon.imageInsets = UIEdgeInsets(top: 5, left: 0, bottom: -5, right: 0)
         OtherViewController.tabBarItem = otherIcon
     }

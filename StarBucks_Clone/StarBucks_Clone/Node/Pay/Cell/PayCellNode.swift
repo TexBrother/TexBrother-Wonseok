@@ -24,7 +24,7 @@ final class PayCellNode: ASCellNode {
     }
     
     private lazy var cardStarBtnNode = ASButtonNode().then {
-        $0.setImage(UIImage(named: "unStar"), for: .normal)
+        $0.setImage(Const.PayTab.star, for: .normal)
     }
     
     private lazy var cardBalanceNode = ASTextNode().then {
@@ -35,7 +35,7 @@ final class PayCellNode: ASCellNode {
     private lazy var barcodeAreaNode = CardBarcodeNode()
     
     private lazy var autoChargeBtnNode = ASButtonNode().then {
-        $0.setImage(UIImage(named: "autoCharge"), for: .normal)
+        $0.setImage(Const.PayTab.autoCharge, for: .normal)
         $0.style.preferredSize = CGSize(width: 24, height: 25)
         $0.contentMode = .scaleToFill
     }
@@ -47,7 +47,7 @@ final class PayCellNode: ASCellNode {
     }
     
     private lazy var normalChargeBtnNode = ASButtonNode().then {
-        $0.setImage(UIImage(named: "normalCharge"), for: .normal)
+        $0.setImage(Const.PayTab.normalCharge, for: .normal)
         $0.style.preferredSize = CGSize(width: 24, height: 25)
         $0.contentMode = .scaleToFill
     }
@@ -173,7 +173,9 @@ extension PayCellNode {
         }
         
         if let represantiveStar = data.isStar {
-            cardStarBtnNode.imageNode.image = UIImage(named: represantiveStar ? "star" : "unStar")
+            let star = Const.PayTab.starActivated
+            let unStar = Const.PayTab.star
+            cardStarBtnNode.imageNode.image = represantiveStar ? star : unStar
         }
         
         visibleContentArray = exist ?

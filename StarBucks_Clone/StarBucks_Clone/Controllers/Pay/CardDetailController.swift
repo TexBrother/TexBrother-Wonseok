@@ -19,7 +19,7 @@ final class CardDetailController: BaseViewController {
     }
     
     private lazy var cardEditBtn = ASButtonNode().then {
-        $0.setImage(UIImage(named: "pencil"), for: .normal)
+        $0.setImage(Const.PayTab.pencil, for: .normal)
     }
     
     private lazy var cardBalanceNode = ASTextNode().then {

@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/ws/Documents/iOS/TexBrother/TexBrother-Wonseok/StarBucks_Clone/StarBucks_Clone/Screens/Pay/CardListController.swift">
-   </FileRef>
-   <FileRef
       location = "group:StarBucks_Clone.xcodeproj">
    </FileRef>
    <FileRef

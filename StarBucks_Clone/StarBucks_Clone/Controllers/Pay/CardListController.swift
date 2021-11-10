@@ -4,9 +4,7 @@
 //
 //  Created by Wonseok Lee on 2021/10/13.
 //
-
 // TODO: separtor 우측 inset만 안먹히는거 해결하기
-
 import AsyncDisplayKit
 
 final class CardListController: ASDKViewController<ASTableNode> {
@@ -38,7 +36,6 @@ final class CardListController: ASDKViewController<ASTableNode> {
 }
 
 // MARK: Extensions
-
 extension CardListController {
     
     // MARK: Style
@@ -56,7 +53,6 @@ extension CardListController {
 }
 
 // MARK: Protocols
-
 extension CardListController: ASTableDataSource, ASTableDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return adBannerNode

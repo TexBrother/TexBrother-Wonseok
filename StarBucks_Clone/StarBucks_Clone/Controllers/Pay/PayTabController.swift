@@ -101,10 +101,10 @@ extension PayTabController {
         // https://medium.com/@zieunv/ios-navigationbar의-istranslucent-영역에-대한-test-ca7ee6333a15
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.tintColor = .lightGray
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.dropShadow(color: .black, offSet: CGSize(width: 0, height: 8), opacity: 0.16, radius: 3)
         navigationItem.title = "Pay"
         navigationItem.backButtonTitle = ""
         navigationItem.largeTitleDisplayMode = .automatic

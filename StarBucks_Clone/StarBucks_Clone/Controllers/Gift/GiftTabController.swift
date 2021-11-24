@@ -13,6 +13,7 @@ final class GiftTabController: ASDKViewController<ASCollectionNode> {
     
     override init() {
         super.init(node: ASCollectionNode.init(collectionViewLayout: UICollectionViewFlowLayout().then { $0.scrollDirection = .vertical }))
+        self.node.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         self.node.backgroundColor = .systemBackground
         self.node.automaticallyManagesSubnodes = true
         self.node.automaticallyRelayoutOnSafeAreaChanges = true

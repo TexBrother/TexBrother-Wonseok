@@ -13,7 +13,7 @@ final class TabBarController: ASTabBarController {
     let PayViewController = PayTabController()
     let OrderViewController = PayTabController()
     let GiftViewController = GiftTabController()
-    let OtherViewController = PayTabController()
+    let OtherViewController = OtherTabController()
     
     // MARK: Main Thread
     override func viewDidLoad() {
@@ -30,8 +30,7 @@ extension TabBarController: UITabBarControllerDelegate {
         delegate = self
         tabBar.shadowImage = UIImage()
         tabBar.backgroundImage = UIImage()
-        tabBar.isTranslucent = false
-        tabBar.backgroundColor = UIColor.secondarySystemBackground
+        tabBar.backgroundColor = UIColor.whiteGrey
         tabBar.tintColor = .seaweedGreen
         configureVCs()
     }

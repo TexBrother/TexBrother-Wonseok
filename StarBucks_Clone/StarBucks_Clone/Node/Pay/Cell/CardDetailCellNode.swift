@@ -21,7 +21,8 @@ final class CardDetailCellNode: ASCellNode {
     }
     private lazy var enterBtnNode = ASButtonNode().then {
         $0.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        $0.tintColor = .black
+        $0.tintColor = .lightGray
+        
     }
     
     // MARK: Background Thread
@@ -35,7 +36,7 @@ final class CardDetailCellNode: ASCellNode {
         
         // MARK: Data Binding
         self.iconNode.image = UIImage(named: model.iconImgName)
-        self.menuTitleNode.attributedText = NSAttributedString(string: model.menuTitle, attributes: Attr.setFont(size: 15))
+        self.menuTitleNode.attributedText = NSAttributedString(string: model.menuTitle, attributes: Attr.setFont(size: 16))
     }
     
     // MARK: Main Thread
@@ -62,7 +63,7 @@ extension CardDetailCellNode {
     }
     
     private func contentLayoutSpec() -> ASLayoutSpec {
-        return ASStackLayoutSpec(direction: .horizontal, spacing: 5, justifyContent: .start, alignItems: .center,
+        return ASStackLayoutSpec(direction: .horizontal, spacing: 8, justifyContent: .start, alignItems: .center,
                                  children: [iconNode, menuTitleNode])
     }
 }

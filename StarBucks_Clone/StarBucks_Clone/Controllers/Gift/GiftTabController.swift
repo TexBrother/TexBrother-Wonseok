@@ -7,7 +7,7 @@
 
 import AsyncDisplayKit
 
-final class GiftTabContrller: ASDKViewController<ASCollectionNode> {
+final class GiftTabController: ASDKViewController<ASCollectionNode> {
     
     // MARK: Background Thread
     
@@ -33,7 +33,7 @@ final class GiftTabContrller: ASDKViewController<ASCollectionNode> {
 
 // MARK: Extensions
 
-extension GiftTabContrller {
+extension GiftTabController {
     
     // MARK: Style
     
@@ -47,7 +47,7 @@ extension GiftTabContrller {
 
 // MARK: Protocols
 
-extension GiftTabContrller: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {
+extension GiftTabController: ASCollectionDataSource, ASCollectionDelegate, ASCollectionDelegateFlowLayout, UICollectionViewDelegateFlowLayout {
     func collectionNode(_ collectionNode: ASCollectionNode, numberOfItemsInSection section: Int) -> Int {
         return giftInfoList.count
     }

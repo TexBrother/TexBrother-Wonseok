@@ -12,7 +12,7 @@ final class TabBarController: ASTabBarController {
     let HomeViewController = PayTabController()
     let PayViewController = PayTabController()
     let OrderViewController = PayTabController()
-    let GiftViewController = GiftTabContrller()
+    let GiftViewController = GiftTabController()
     let OtherViewController = PayTabController()
     
     // MARK: Main Thread
